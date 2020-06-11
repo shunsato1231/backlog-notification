@@ -5,10 +5,10 @@ export type StepObjType = {
   status : 'pending' | 'current' | 'done'
 }
 
-type StepNumType   = number | 'finish' | 'allPending'
+export type StepNumType   = number | 'finish' | 'allPending'
 type DirectionType = 'prev' | 'next' 
 
-interface Progress {
+export interface ProgressContextType {
   progressList: StepObjType[]
   currentStep : StepNumType,
   direction   : DirectionType,
@@ -17,7 +17,7 @@ interface Progress {
   SetNextProgress     : (step: StepNumType) => void,
 }
 
-export const useProgress = (initialProgressList: StepObjType[], initialStep: StepNumType): Progress => {
+export const useProgress = (initialProgressList: StepObjType[], initialStep: StepNumType): ProgressContextType => {
   const [progressList, setProgressList] = useState<StepObjType[]>(initialProgressList)
   const [currentStep, setCurrentStep]   = useState<StepNumType>(initialStep)
   const [direction, setDirection]       = useState<DirectionType>('next')
