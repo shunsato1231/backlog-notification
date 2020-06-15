@@ -1,9 +1,10 @@
+import React from 'react'
 import useProgress, { ProgressContextType, StepObjType, StepNumType } from "./Introduction.hook"
 import { createContext, useContext } from 'react'
 
 const defaultProgressContext: ProgressContextType = {
   progressList: [],
-  currentStep: 0,
+  currentStep: 'allPending',
   direction: 'next',
   Next: () => {},
   Prev: () => {},

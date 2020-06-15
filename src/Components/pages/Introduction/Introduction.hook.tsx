@@ -94,7 +94,7 @@ export const useProgress = (initialProgressList: StepObjType[], initialStep: Ste
           return el.status = 'done'
         } else if(index === nextStep -1) {
           return el.status = 'current'
-        } else if(index > nextStep - 1) {
+        } else {
           return el.status = 'pending'
         }
       })
