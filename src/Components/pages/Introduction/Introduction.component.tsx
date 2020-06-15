@@ -1,13 +1,35 @@
 import React from 'react'
+import {StepObjType, StepNumType } from '../../../Hooks/Progress/Progress.hook'
 import { PageTemplate } from '../../templates/PageTemplate/PageTemplate.component'
 import { StartView } from '../../organisms/StartView/StartView.component'
-import { ProgressProvider } from './Introduction.context'
+import { ProgressProvider } from '../../../Hooks/Progress/Progress.context'
+import { ProgressBar } from '../../molecures/ProgressBar/ProgressBar.component'
 
-export const Introduction: React.SFC = () => {
+export const Introduction: React.FC = () => {
+  const initialProgressList: StepObjType[] = [
+    {
+      name: 'API keyの入力',
+      status: 'pending'
+    },
+    {
+      name: '通知ユーザの追加',
+      status: 'pending'
+    },
+    {
+      name: '確認',
+      status: 'pending'
+    }
+  ]
+  const initialStep: StepNumType = 'allPending'
+
   return (
-    <ProgressProvider>
+    <ProgressProvider
+      list={initialProgressList}
+      step={initialStep}
+    >
       <PageTemplate>
         <StartView></StartView>
+        <ProgressBar></ProgressBar>
       </PageTemplate>
     </ProgressProvider>
   )

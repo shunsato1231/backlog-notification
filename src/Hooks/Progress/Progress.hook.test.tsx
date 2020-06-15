@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { useProgress, StepObjType } from './Introduction.hook';
+import { useProgress, StepObjType } from './Progress.hook';
 
 describe('[CUSTOM HOOK] useProgress', () => {
   it('should increment step', () => {

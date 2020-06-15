@@ -23,6 +23,22 @@ export const useProgress = (initialProgressList: StepObjType[], initialStep: Ste
   const [direction, setDirection]       = useState<DirectionType>('next')
 
   /**
+   * hashが変更されたら発火
+   */
+  const hashChange = (): void => {
+    if(window.location.hash.includes('step')) {
+      const step = window.location.hash.replace(/[^0-9]/g, '')
+      SetNextProgress(Number(step))
+    } else if(window.location.hash.includes('finish')) {
+      SetNextProgress('finish')
+    } else {
+      SetNextProgress('allPending')
+    }
+  }
+
+  window.onhashchange = hashChange
+
+  /**
    * ステップを1つ進める
    */
   const Next = (): void => {

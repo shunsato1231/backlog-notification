@@ -1,5 +1,5 @@
 import React from 'react'
-import useProgress, { ProgressContextType, StepObjType, StepNumType } from "./Introduction.hook"
+import useProgress, { ProgressContextType, StepObjType, StepNumType } from "./Progress.hook"
 import { createContext, useContext } from 'react'
 
 const defaultProgressContext: ProgressContextType = {
@@ -14,24 +14,13 @@ const defaultProgressContext: ProgressContextType = {
 const ProgressContext = createContext<ProgressContextType>(defaultProgressContext)
 export const useProgressContext = () => useContext(ProgressContext)
 
-const initialProgressList: StepObjType[] = [
-  {
-    name: 'step1',
-    status: 'pending'
-  },
-  {
-    name: 'step2',
-    status: 'pending'
-  },
-  {
-    name: 'step3',
-    status: 'pending'
-  }
-]
-const initialStep: StepNumType = 'allPending'
+type Props = {
+  list: StepObjType[],
+  step: StepNumType
+}
 
-export const ProgressProvider: React.SFC = ({children}) => {
-  const progressCtx = useProgress(initialProgressList, initialStep);
+export const ProgressProvider: React.FC<Props> = ({children, list, step}) => {
+  const progressCtx = useProgress(list, step);
   return (
     <ProgressContext.Provider value={progressCtx}>
       {children}

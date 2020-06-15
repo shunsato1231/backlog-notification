@@ -1,14 +1,14 @@
 import React from 'react'
-import { useProgressContext } from '../../pages/Introduction/Introduction.context'
+import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
 
 // tslint:disable-next-line:no-any
 const styles: any = require('./StartView.style.styl')
 
-export const StartView:React.SFC = () => {
+export const StartView:React.FC = () => {
   const progress = useProgressContext()
 
   return (
-    <div
+    <section
       className={ progress.currentStep === 'allPending' ? styles.wrapper : `${styles.wrapper} ${styles.started}` }
       data-testid='wrapper'
       >
@@ -19,6 +19,6 @@ export const StartView:React.SFC = () => {
         onClick={()=>{progress.Next()}}
         data-testid='button'
       >設定して利用開始する</button>
-    </div>
+    </section>
   )
 }

@@ -2,7 +2,7 @@ import React from 'react'
 
 const styles = require('./PageTemplate.style.styl')
 
-export const PageTemplate: React.SFC = ({children}) => {
+export const PageTemplate: React.FC = ({children}) => {
   return (
     <div className={styles.wrapper}>
       { children }
