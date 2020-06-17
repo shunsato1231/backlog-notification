@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { shallow } from 'enzyme'
 import { StartView } from './StartView.component';
-import * as ProgressContext  from '../../../Hooks/Progress/Progress.context'
+import * as ProgressContext from '../../../Hooks/Progress/Progress.context'
 
 const sel = (id: string) => {
   return `[data-testid="${id}"]`

@@ -2,13 +2,15 @@ import React from 'react'
 import useProgress, { ProgressContextType, StepObjType, StepNumType } from "./Progress.hook"
 import { createContext, useContext } from 'react'
 
+/* istanbul ignore next */
 const defaultProgressContext: ProgressContextType = {
   progressList: [],
   currentStep: 'allPending',
   direction: 'next',
   Next: () => {},
   Prev: () => {},
-  SetNextProgress: () => {}
+  SetNextProgress: () => {},
+  hashChange: () => {}
 }
 
 const ProgressContext = createContext<ProgressContextType>(defaultProgressContext)

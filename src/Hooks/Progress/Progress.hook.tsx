@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export type StepObjType = {
   name   : string,
@@ -9,12 +9,13 @@ export type StepNumType   = number | 'finish' | 'allPending'
 type DirectionType = 'prev' | 'next' 
 
 export interface ProgressContextType {
-  progressList: StepObjType[]
-  currentStep : StepNumType,
-  direction   : DirectionType,
-  Next        : () => void,
-  Prev        : () => void,
-  SetNextProgress     : (step: StepNumType) => void,
+  progressList    : StepObjType[]
+  currentStep     : StepNumType,
+  direction       : DirectionType,
+  Next            : () => void,
+  Prev            : () => void,
+  SetNextProgress : (step: StepNumType) => void,
+  hashChange: () => void
 }
 
 export const useProgress = (initialProgressList: StepObjType[], initialStep: StepNumType): ProgressContextType => {
@@ -23,20 +24,18 @@ export const useProgress = (initialProgressList: StepObjType[], initialStep: Ste
   const [direction, setDirection]       = useState<DirectionType>('next')
 
   /**
-   * hashが変更されたら発火
+   * hashに合わせてProgressを進める
    */
   const hashChange = (): void => {
-    if(window.location.hash.includes('step')) {
-      const step = window.location.hash.replace(/[^0-9]/g, '')
-      SetNextProgress(Number(step))
-    } else if(window.location.hash.includes('finish')) {
-      SetNextProgress('finish')
-    } else {
-      SetNextProgress('allPending')
+    const hashToStepNum: StepNumType 
+      = window.location.hash.includes('step')   ? Number(window.location.hash.replace(/[^0-9]/g, ''))
+      : window.location.hash.includes('finish') ? 'finish'
+      : 'allPending'
+
+    if(currentStep !== hashToStepNum) {
+      SetNextProgress(hashToStepNum)
     }
   }
-
-  window.onhashchange = hashChange
 
   /**
    * ステップを1つ進める
@@ -100,10 +99,12 @@ export const useProgress = (initialProgressList: StepObjType[], initialStep: Ste
       progressList_copy.map(el => el.status = 'done')
       setProgressList(progressList_copy)
       setCurrentStep('finish')
+      window.location.hash = 'finish'
     } else if(nextStep === 'allPending' || nextStep < 1) {
       progressList_copy.map(el => el.status = 'pending')
       setProgressList(progressList_copy)
       setCurrentStep('allPending')
+      window.location.hash = ''
     } else {
       progressList_copy.map((el, index) => {
         if(index < nextStep -1) {
@@ -116,8 +117,19 @@ export const useProgress = (initialProgressList: StepObjType[], initialStep: Ste
       })
       setProgressList(progressList_copy)
       setCurrentStep(nextStep)
+      window.location.hash = 'step' + nextStep
     }
   }
+
+
+  /**
+   * hashChange関数の登録をし、ページ読み込み初期に発火する
+   * 
+   */
+  window.onhashchange = hashChange
+  useEffect(() => {
+    hashChange()
+  }) 
 
   return {
     progressList,
@@ -125,7 +137,8 @@ export const useProgress = (initialProgressList: StepObjType[], initialStep: Ste
     direction,
     Next,
     Prev,
-    SetNextProgress
+    SetNextProgress,
+    hashChange
   }
 }
 

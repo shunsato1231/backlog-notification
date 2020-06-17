@@ -219,4 +219,40 @@ describe('[CUSTOM HOOK] useProgress', () => {
       }
     ])
   })
+
+  it('should change currentStep when chnaged hash', ()=> {
+    const initialProgress: StepObjType[] = [
+      {
+        name: 'step1',
+        status: 'pending'
+      },
+      {
+        name: 'step2',
+        status: 'pending'
+      }
+    ]
+    
+
+    const { result } = renderHook(() => useProgress(initialProgress, 'allPending'))
+
+    window.location.hash = 'step1'
+    act(() => {result.current.hashChange()})
+    expect(result.current.currentStep).toBe(1)
+
+    window.location.hash = 'step2'
+    act(() => {result.current.hashChange()})
+    expect(result.current.currentStep).toBe(2)
+
+    window.location.hash = 'step3'
+    act(() => {result.current.hashChange()})
+    expect(result.current.currentStep).toBe('finish')
+
+    window.location.hash = ''
+    act(() => {result.current.hashChange()})
+    expect(result.current.currentStep).toBe('allPending')
+
+    window.location.hash = 'finish'
+    act(() => {result.current.hashChange()})
+    expect(result.current.currentStep).toBe('finish')
+  })
 })
