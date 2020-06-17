@@ -2,13 +2,17 @@ import React from 'react'
 import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
 const styles = require('./ProgressBar.style.styl')
 
-export const ProgressBar: React.SFC = () => {
+type Props = {
+  wrapperStyle?: any
+}
+
+export const ProgressBar: React.FC<Props> = (props) => {
 
   const progress = useProgressContext()
 
   return(
     <>
-      <div className={`${styles.wrapper} ${styles[progress.direction]}`}>
+      <div className={`${styles.wrapper} ${styles[progress.direction]} ${props.wrapperStyle}`}>
         {progress.progressList.map((item, index) =>
           <div 
             className={`${styles.item} ${styles[item.status]}`}
@@ -26,8 +30,10 @@ export const ProgressBar: React.SFC = () => {
           </div>
         )}
       </div>
-      <button onClick={()=>{progress.Next()}}>next</button>
-      <button onClick={()=>{progress.Prev()}}>prev</button>
     </>
   )
+}
+
+ProgressBar.defaultProps ={
+  wrapperStyle: ''
 }
