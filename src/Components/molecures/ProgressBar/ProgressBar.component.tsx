@@ -10,10 +10,14 @@ export const ProgressBar: React.SFC = () => {
     <>
       <div className={`${styles.wrapper} ${styles[progress.direction]}`}>
         {progress.progressList.map((item, index) =>
-          <div className={`${styles.item} ${styles[item.status]}`} key={item.name}>
+          <div 
+            className={`${styles.item} ${styles[item.status]}`}
+            key={item.name}
+            data-testid='step'
+          >
             <div className={styles.step}>
               <div className={styles.checkBefore}></div>
-              <p className={styles.description}>{item.name}</p>
+              <p className={styles.description} data-testid='description'>{item.name}</p>
               <div className={styles.checkAfter}></div>
             </div>
             {progress.progressList.length !== index + 1 &&
