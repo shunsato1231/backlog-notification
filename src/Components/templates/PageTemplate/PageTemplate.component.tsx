@@ -1,6 +1,5 @@
 import React from 'react'
-
-const styles = require('./PageTemplate.style.styl')
+import styles from './PageTemplate.style.styl'
 
 export const PageTemplate: React.FC = ({children}) => {
   return (

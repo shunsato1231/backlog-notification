@@ -1,8 +1,6 @@
 import React from 'react'
+import styles from './StartView.style.styl'
 import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
-
-// tslint:disable-next-line:no-any
-const styles: any = require('./StartView.style.styl')
 
 export const StartView:React.FC = () => {
   const progress = useProgressContext()

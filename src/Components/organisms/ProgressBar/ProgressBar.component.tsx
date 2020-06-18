@@ -1,18 +1,20 @@
 import React from 'react'
+import styles from './ProgressBar.style.styl'
 import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
-const styles = require('./ProgressBar.style.styl')
 
-type Props = {
-  wrapperStyle?: any
+interface ProgressProps extends React.Props<{}> {
+  className?: any
 }
 
-export const ProgressBar: React.FC<Props> = (props) => {
+export const ProgressBar: React.FC<ProgressProps> = ({
+    className
+  }) => {
 
   const progress = useProgressContext()
 
   return(
     <>
-      <div className={`${styles.wrapper} ${styles[progress.direction]} ${props.wrapperStyle}`}>
+      <div className={`${styles.wrapper} ${styles[progress.direction]} ${className || ''}`}>
         {progress.progressList.map((item, index) =>
           <div 
             className={`${styles.item} ${styles[item.status]}`}
@@ -32,8 +34,4 @@ export const ProgressBar: React.FC<Props> = (props) => {
       </div>
     </>
   )
-}
-
-ProgressBar.defaultProps ={
-  wrapperStyle: ''
 }

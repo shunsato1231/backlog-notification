@@ -126,9 +126,13 @@ export const useProgress = (initialProgressList: StepObjType[], initialStep: Ste
    * hashChange関数の登録をし、ページ読み込み初期に発火する
    * 
    */
-  window.onhashchange = hashChange
   useEffect(() => {
-    hashChange()
+    document.onreadystatechange = () => {
+      hashChange()
+    }
+    window.onhashchange = () => {
+      hashChange()
+    }
   }) 
 
   return {

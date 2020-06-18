@@ -1,27 +1,32 @@
 import React from 'react'
+import styles from './SliderWrapper.style.styl'
 
-const styles = require('./SliderWrapper.style.styl')
-
-type Props = {
-  wrapperStyle?: any,
+interface SliderWrapperProps extends React.Props<{}> {
+  className?: any,
   step: number,
   length: number
 }
 
-export const SliderWrapper: React.FC<Props> = (props, {children}) => {
+export const SliderWrapper: React.FC<SliderWrapperProps> = ({
+    className,
+    step = 0,
+    length = 0,
+    children
+  }) => {
 
   const styleVar = {
-    '--step'  : props.step,
-    '--length': props.length
+    '--step'  : step > 0 ? step - 1 : 0,
+    '--length': length,
   }
 
   return (
-    <div className={`${styles.wrapper} ${props.wrapperStyle}`} style={styleVar as React.CSSProperties}>
-      {children}
+    <div
+      className={`${className || ''} ${styles.wrapper}`}
+      style={styleVar as React.CSSProperties}
+    >
+      <div className={styles.slider}>
+        {children}
+      </div>
     </div>
   )
-}
-
-SliderWrapper.defaultProps = {
-  wrapperStyle: ''
 }
