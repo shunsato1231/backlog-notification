@@ -4,13 +4,11 @@ import * as ProgressContext from '../../../Hooks/Progress/Progress.context'
 import { ProgressBar } from './ProgressBar.component';
 import { shallow } from 'enzyme';
 
-// const styles = require('./ProgressBar.style.styl')
-
 const sel = (id: string) => {
   return `[data-testid="${id}"]`
 }
 
-describe('[MOLECURES] ProgressBar', () => {
+describe('[ORGANISMS] ProgressBar', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(<ProgressBar />, div);

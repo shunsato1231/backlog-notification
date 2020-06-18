@@ -1,12 +1,9 @@
 import React from 'react'
-import { StepObjType, StepNumType, useProgress } from '../../../Hooks/Progress/Progress.hook'
+import {StepObjType, StepNumType } from '../../../Hooks/Progress/Progress.hook'
 import { PageTemplate } from '../../templates/PageTemplate/PageTemplate.component'
 import { StartView } from '../../organisms/StartView/StartView.component'
-import { ProgressContext } from '../../../Hooks/Progress/Progress.context'
-import { ProgressBar } from '../../molecures/ProgressBar/ProgressBar.component'
-import { SliderWrapper } from '../../organisms/SliderWrapper/SliderWrapper.component'
-
-const styles = require('./Introduction.style.styl')
+import { ProgressProvider } from '../../../Hooks/Progress/Progress.context'
+import { InitialSettings } from '../../organisms/InitialSettings/InitialSettings.component'
 
 export const Introduction: React.FC = () => {
   const initialProgressList: StepObjType[] = [
@@ -24,22 +21,16 @@ export const Introduction: React.FC = () => {
     }
   ]
   const initialStep: StepNumType = 'allPending'
-  const progressCtx = useProgress(initialProgressList, initialStep)
 
   return (
-    <ProgressContext.Provider
-      value={progressCtx}
+    <ProgressProvider
+      list={initialProgressList}
+      step={initialStep}
     >
       <PageTemplate>
         <StartView></StartView>
-        <div 
-          className={progressCtx.currentStep === 'allPending' ? `${styles.notStarted} ${styles.wrapper}` : styles.wrapper}
-          data-testid="wrapper"
-        >
-          <ProgressBar wrapperStyle={styles.progressBar}></ProgressBar>
-          <SliderWrapper></SliderWrapper>
-        </div>
+        <InitialSettings></InitialSettings>
       </PageTemplate>
-    </ProgressContext.Provider>
+    </ProgressProvider>
   )
 }

@@ -6,7 +6,7 @@ const App: React.SFC = () => {
   return(
     <Router>
       <Switch>
-        <Route path="/setting" component={Introduction} exact/>
+        <Route path="/introduction" component={Introduction} exact/>
         <Route path='/' exact>index</Route>
       </Switch>
     </Router>
