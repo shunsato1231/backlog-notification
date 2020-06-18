@@ -9,8 +9,8 @@ interface SliderWrapperProps extends React.Props<{}> {
 
 export const SliderWrapper: React.FC<SliderWrapperProps> = ({
     className,
-    step = 0,
-    length = 0,
+    step,
+    length,
     children
   }) => {
 
@@ -23,6 +23,7 @@ export const SliderWrapper: React.FC<SliderWrapperProps> = ({
     <div
       className={`${className || ''} ${styles.wrapper}`}
       style={styleVar as React.CSSProperties}
+      data-testid='wrapper'
     >
       <div className={styles.slider}>
         {children}

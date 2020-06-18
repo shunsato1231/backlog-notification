@@ -9,6 +9,14 @@ const sel = (id: string) => {
 }
 
 describe('[ORGANISMS] InitialSettings', () => {
+
+  const progressList = [
+    {
+      name: 'step1',
+      status: 'current'
+    }
+  ]
+
   it('renders without crashing', () => {
     const div = document.createElement('div')
     ReactDOM.render(<InitialSettings />, div)
@@ -16,9 +24,11 @@ describe('[ORGANISMS] InitialSettings', () => {
   })
 
   it('has class "notStarted" when currentStep is "allPending" ', ()=> {
+
     jest.spyOn(ProgressContext, 'useProgressContext').mockImplementation(():any => {
       return {
         currentStep: 'allPending',
+        progressList: progressList
       }
     })
 
@@ -31,6 +41,7 @@ describe('[ORGANISMS] InitialSettings', () => {
     jest.spyOn(ProgressContext, 'useProgressContext').mockImplementation(():any => {
       return {
         currentStep: 1,
+        progressList: progressList
       }
     })
 
@@ -43,6 +54,7 @@ describe('[ORGANISMS] InitialSettings', () => {
     jest.spyOn(ProgressContext, 'useProgressContext').mockImplementation(():any => {
       return {
         currentStep: 'finish',
+        progressList: progressList
       }
     })
 
