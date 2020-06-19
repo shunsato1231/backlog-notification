@@ -8,12 +8,12 @@ interface InputProps extends React.Props<{}> {
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export const Input: React.FC<InputProps> = ({
+export const Input:React.FC<InputProps> = ({
     className,
     theme,
     placeholder,
     onChange
-}) => (
+}): JSX.Element => (
     <input
       className={`${styles[theme]} ${className || ''}`}
       onChange={onChange}

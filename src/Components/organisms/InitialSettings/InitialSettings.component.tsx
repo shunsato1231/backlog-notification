@@ -5,7 +5,7 @@ import { SliderWrapper } from '../../molecures/SliderWrapper/SliderWrapper.compo
 import styles from './InitialSettings.style.styl'
 import { SetApiKey } from '../SetApiKey/SetApiKey.component'
 
-export const InitialSettings: React.FC = () => {
+export const InitialSettings: React.FC = (): JSX.Element => {
 
   const progress = useProgressContext()
 

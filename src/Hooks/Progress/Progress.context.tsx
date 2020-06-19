@@ -13,15 +13,19 @@ const defaultProgressContext: ProgressContextType = {
   hashChange: () => {}
 }
 
-export const ProgressContext = createContext<ProgressContextType>(defaultProgressContext)
-export const useProgressContext = () => useContext(ProgressContext)
+export const ProgressContext: React.Context<ProgressContextType> = createContext<ProgressContextType>(defaultProgressContext)
+export const useProgressContext = (): ProgressContextType => useContext(ProgressContext)
 
 interface ProgressProviderProps extends React.Props<{}> {
   list: StepObjType[],
   step: StepNumType
 }
 
-export const ProgressProvider: React.FC<ProgressProviderProps> = ({children, list, step}) => {
+export const ProgressProvider: React.FC<ProgressProviderProps> = ({
+  children,
+  list,
+  step
+}): JSX.Element => {
   const progressCtx = useProgress(list, step);
   return (
     <ProgressContext.Provider value={progressCtx}>

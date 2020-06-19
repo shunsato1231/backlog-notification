@@ -12,7 +12,7 @@ export const SliderWrapper: React.FC<SliderWrapperProps> = ({
     step,
     length,
     children
-  }) => {
+  }): JSX.Element => {
 
   const styleVar = {
     '--step'  : step > 0 ? step - 1 : 0,
