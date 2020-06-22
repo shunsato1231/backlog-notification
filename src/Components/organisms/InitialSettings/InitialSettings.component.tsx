@@ -20,6 +20,7 @@ export const InitialSettings: React.FC = (): JSX.Element => {
     >
       <ProgressBar className={styles.progressBar}></ProgressBar>
       <SliderWrapper
+        className={styles.slideWrapper}
         step={progressStep}
         length={progress.progressList.length}
       >

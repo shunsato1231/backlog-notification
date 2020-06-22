@@ -1,3 +1,4 @@
+import React from 'react'
 import { useReducer } from "react"
 
 type Settings = {
@@ -5,16 +6,16 @@ type Settings = {
   userList: string[]
 }
 
-interface Action<type, peyload, errors = {}> {
+interface Action<type, payload, errors = {}> {
   type: type,
-  payload: peyload,
+  payload: payload,
   errors?: errors
 }
 
-type changeSettings = Action<'CHANGE_SETTINGS', {
+type changeSettings = Action<'CHANGE_SETTINGS', Partial<{
   apiKey: string,
   userList: string[]
-}>
+}>>
 type Actions = changeSettings
 
 interface State {
@@ -28,25 +29,36 @@ interface State {
   }
 }
 
+export const errorMessages = {
+  apiKey: 'API Keyが入力されていません。',
+  userList: '通知をするユーザ名が入力されていません。'
+}
+
 const required = (value) => {
-  return value === null || value === undefined || value === '' || typeof value === 'number' && isNaN(value) ? false : true
+  return value === null || value === undefined || value === '' ? false : true
 }
 
 const reducer = (state: State, action: Actions): State => {
   switch(action.type) {
-    case 'CHANGE_SETTINGS': return {
-      inputs: { ...state.inputs, ...action.payload},
-      errors: {
-        ...state.errors,
-        apiKey: action.payload.apiKey || action.payload.apiKey === ''
-          ? required(state.inputs.apiKey)   ? null : 'API Keyが入力されていません。'
-          : required(action.payload.apiKey) ? null : 'API Keyが入力されていません。',
+    case 'CHANGE_SETTINGS': 
 
-        userList: action.payload.userList[0] || action.payload.userList[0] === ''
-          ? required(state.inputs.userList[0])   ? null : '通知をするユーザ名が入力されていません。'
-          : required(action.payload.userList[0]) ? null : '通知をするユーザ名が入力されていません。'
+      let checkPayloadUserList = action.payload.userList === undefined ? undefined 
+        : action.payload.userList.length === 1 ? action.payload.userList[0]
+        : action.payload.userList.filter(Boolean)[0]
+
+      return {
+        inputs: { ...state.inputs, ...action.payload},
+        errors: {
+          ...state.errors,
+          apiKey: action.payload.apiKey || action.payload.apiKey === ''
+            ? required(action.payload.apiKey) ? null : errorMessages.apiKey
+            : required(state.inputs.apiKey) ? null : errorMessages.apiKey,
+
+          userList: checkPayloadUserList || checkPayloadUserList === ''
+            ? required(checkPayloadUserList) ? null : errorMessages.userList
+            : required(state.inputs.userList.filter(Boolean)[0]) ? null :errorMessages.userList
+        }
       }
-    }
   }
 }
 
@@ -63,8 +75,8 @@ export const useSettingsForm = (initialState?: Settings): SettingsContextType =>
         userList: []
       },
       errors: {
-        apiKey: null,
-        userList: null
+        apiKey: errorMessages.apiKey,
+        userList: errorMessages.userList
       }
   })
 

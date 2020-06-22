@@ -3,6 +3,7 @@
 interface CssExports {
   'notStarted': string;
   'progressBar': string;
+  'slideWrapper': string;
   'wrapper': string;
 }
 export const cssExports: CssExports;

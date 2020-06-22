@@ -1,3 +1,4 @@
+import React from 'react'
 import { useSettingsForm, SettingsContextType } from './SettingsForm.hook'
 import { createContext, useContext } from 'react'
 
@@ -17,7 +18,7 @@ const defaultSettingContext: SettingsContextType = {
 }
 
 const SettingsFormContext: React.Context<SettingsContextType> = createContext<SettingsContextType>(defaultSettingContext)
-export const useSettingsContext = ():SettingsContextType => useContext(SettingsFormContext)
+export const useSettingsFormContext = (): SettingsContextType => useContext(SettingsFormContext)
 
 interface SettingsFormProviderProps extends React.Props<{}> {
   apiKey: '',

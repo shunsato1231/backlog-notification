@@ -1,28 +1,42 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { H2 } from '../../atoms/Heading/Heading.component'
 import { Button } from '../../atoms/Button/Button.component'
 import { Input } from '../../atoms/Form/Form.component'
 
 import styles from './SetApiKey.style.styl'
-import { useInput } from '../../../Hooks/Input/Input.hook'
 import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
+import { useSettingsFormContext } from '../../../Hooks/SettingsForm/SettingsForm.context'
 
 export const SetApiKey: React.FC = (): JSX.Element => {
   const progress = useProgressContext()
-  const apiKey = useInput('')
-  console.log(apiKey)
+  const settings = useSettingsFormContext()
+
+  const updateApiKey = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    settings.dispatch({
+      type: 'CHANGE_SETTINGS',
+      payload: {
+        apiKey: event.target.value,
+      }
+    })
+  }, [])
 
   return (
-    <div>
-      <H2 type='initialSetting-h2'>API Keyを入力</H2>
+    <div className={styles.wrapper}>
+      <H2
+        type='initialSetting-h2'
+      >API Keyを入力</H2>
       <Input
         className={styles.input}
         theme='initialSetting'
         placeholder='API Key'
-        {...apiKey}
+        value={settings.state.inputs.apiKey}
+        onChange={updateApiKey}
+        data-testid='input'
       />
       <Button
+        disabled={settings.state.errors.apiKey !== null}
         onClick={progress.Next}
+        data-testid='button'
       >次へ</Button>
     </div>
   )
