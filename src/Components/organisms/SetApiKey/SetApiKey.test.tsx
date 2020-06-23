@@ -37,7 +37,7 @@ describe('[ORGANISMS] SetApiKey', ()=> {
     const input = wrapper.find(sel('input'))
     input.simulate('change')
     expect(dispatchMock).toBeCalledWith({
-      type: 'CHANGE_SETTINGS',
+      type: 'CHANGE_API_KEY',
       payload: {
         apiKey: 'test Key'
       }

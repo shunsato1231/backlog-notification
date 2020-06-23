@@ -6,17 +6,25 @@ type Settings = {
   userList: string[]
 }
 
-interface Action<type, payload, errors = {}> {
+interface Action<type, payload = {}, errors = {}> {
   type: type,
-  payload: payload,
+  payload?: payload,
   errors?: errors
 }
 
-type changeSettings = Action<'CHANGE_SETTINGS', Partial<{
+type changeApiKey = Action<'CHANGE_API_KEY', {
   apiKey: string,
-  userList: string[]
-}>>
-type Actions = changeSettings
+}>
+
+type changeUserList = Action<'CHANGE_USER_LIST', {
+  userName: string,
+  index: number
+}>
+
+type pushUserList = Action<'PUSH_USERLIST'>
+type popUserList = Action<'POP_USERLIST', {index: number}>
+
+type Actions = changeApiKey | changeUserList | pushUserList | popUserList
 
 interface State {
   inputs: {
@@ -40,25 +48,64 @@ const required = (value) => {
 
 const reducer = (state: State, action: Actions): State => {
   switch(action.type) {
-    case 'CHANGE_SETTINGS': 
-
-      let checkPayloadUserList = action.payload.userList === undefined ? undefined 
-        : action.payload.userList.length === 1 ? action.payload.userList[0]
-        : action.payload.userList.filter(Boolean)[0]
-
+    case 'CHANGE_API_KEY': {
       return {
         inputs: { ...state.inputs, ...action.payload},
         errors: {
           ...state.errors,
-          apiKey: action.payload.apiKey || action.payload.apiKey === ''
-            ? required(action.payload.apiKey) ? null : errorMessages.apiKey
-            : required(state.inputs.apiKey) ? null : errorMessages.apiKey,
-
-          userList: checkPayloadUserList || checkPayloadUserList === ''
-            ? required(checkPayloadUserList) ? null : errorMessages.userList
-            : required(state.inputs.userList.filter(Boolean)[0]) ? null :errorMessages.userList
+          apiKey: required(action.payload.apiKey) ? null : errorMessages.apiKey
         }
       }
+    }
+
+    case 'CHANGE_USER_LIST': {
+      let newUserList = state.inputs.userList
+      newUserList[action.payload.index] = action.payload.userName
+
+      let UserListFirst = newUserList.length === 1 ? newUserList[0]
+        : newUserList.filter(Boolean)[0]
+
+      return {
+        inputs: { ...state.inputs, userList: newUserList},
+        errors: {
+          ...state.errors,
+          userList: required(UserListFirst) ? null : errorMessages.userList
+        }
+      }
+    }
+
+    case 'PUSH_USERLIST': {
+      let pushedUserlist = state.inputs.userList
+      pushedUserlist.push('')
+      return {
+        inputs: {
+          apiKey: state.inputs.apiKey,
+          userList: pushedUserlist
+        },
+        errors: {
+          ...state.errors
+        }
+      }
+    }
+
+    case 'POP_USERLIST': {
+      let popedUserList = state.inputs.userList
+      popedUserList.splice(action.payload.index, 1)
+
+      let checkPopedUserList = popedUserList.length === 1 ? popedUserList[0]
+        : popedUserList.filter(Boolean)[0]
+
+      return {
+        inputs: {
+          apiKey: state.inputs.apiKey,
+          userList: popedUserList
+        },
+        errors: {
+          ...state.errors,
+          userList: required(checkPopedUserList) ? null : errorMessages.userList
+        }
+      }
+    }
   }
 }
 

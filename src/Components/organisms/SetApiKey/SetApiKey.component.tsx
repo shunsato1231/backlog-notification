@@ -13,7 +13,7 @@ export const SetApiKey: React.FC = (): JSX.Element => {
 
   const updateApiKey = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     settings.dispatch({
-      type: 'CHANGE_SETTINGS',
+      type: 'CHANGE_API_KEY',
       payload: {
         apiKey: event.target.value,
       }
@@ -23,7 +23,7 @@ export const SetApiKey: React.FC = (): JSX.Element => {
   return (
     <div className={styles.wrapper}>
       <H2
-        type='initialSetting-h2'
+        theme='initialSetting-h2'
       >API Keyを入力</H2>
       <Input
         className={styles.input}
