@@ -4,6 +4,7 @@ import { ProgressBar } from '../ProgressBar/ProgressBar.component'
 import { SliderWrapper } from '../../molecures/SliderWrapper/SliderWrapper.component'
 import styles from './InitialSettings.style.styl'
 import { SetApiKey } from '../SetApiKey/SetApiKey.component'
+import { SetUserList } from '../SetUserList/SetUserList.component'
 
 export const InitialSettings: React.FC = (): JSX.Element => {
 
@@ -25,7 +26,7 @@ export const InitialSettings: React.FC = (): JSX.Element => {
         length={progress.progressList.length}
       >
         <SetApiKey />
-        <div>おねがいします</div>
+        <SetUserList/>
         <div>おねがいします</div>
       </SliderWrapper>
     </div>

@@ -34,3 +34,86 @@
   width 200px
   height 45px
   font-size 18px
+
+.add
+  display block
+  position absolute
+  border none
+  outline none
+  width 30px
+  height 30px
+  border-radius 15px
+  background rgba(65, 178, 137, 0.3)
+  &:hover
+    cursor pointer
+    background rgba(65, 178, 137, 1)
+  &:before
+    display block
+    content ''
+    position absolute
+    width 16px
+    height 2px
+    background #fff
+    top 0
+    bottom 0
+    left 0
+    right 0
+    margin auto
+  &:after
+    display block
+    content ''
+    position absolute
+    width 2px
+    height 16px
+    background #fff
+    top 0
+    bottom 0
+    left 0
+    right 0
+    margin auto
+
+.delete
+  display block
+  position absolute
+  border none
+  outline none
+  transition 0.3s
+  width 30px
+  height 30px
+  border-radius 15px
+  background rgba(209, 51, 48, 0.1)
+  &:hover
+    cursor pointer
+    background rgba(209, 51, 48, 0.8)
+  &:before
+    display block
+    content ''
+    position absolute
+    width 16px
+    height 2px
+    background #fff
+    top 0
+    bottom 0
+    left 0
+    right 0
+    margin auto
+
+.back
+  position relative
+  border none
+  outline none
+  width 35px
+  height 35px
+  background transparent
+  &:hover
+    cursor pointer
+  &:before
+    content ''
+    width 20px
+    height 20px
+    position absolute
+    top 5px
+    left 5px
+    border-top 3px solid #ccc
+    border-right 3px solid #ccc
+    transform rotate(225deg)

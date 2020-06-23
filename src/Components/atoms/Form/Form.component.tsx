@@ -5,8 +5,8 @@ interface InputProps extends React.Props<{}> {
     className?: string,
     theme?: 'initialSetting',
     placeholder?: string
-    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
-    value: string
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
+    value: string, 
 }
 
 export const Input:React.FC<InputProps> = ({
@@ -14,7 +14,7 @@ export const Input:React.FC<InputProps> = ({
     theme,
     placeholder,
     onChange,
-    value
+    value,
 }): JSX.Element => (
     <input
       className={`${styles[theme]} ${className || ''}`}
