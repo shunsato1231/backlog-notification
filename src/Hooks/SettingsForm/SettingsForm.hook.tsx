@@ -21,8 +21,8 @@ type changeUserList = Action<'CHANGE_USER_LIST', {
   index: number
 }>
 
-type pushUserList = Action<'PUSH_USERLIST'>
-type popUserList = Action<'POP_USERLIST', {index: number}>
+type pushUserList = Action<'PUSH_USER_LIST'>
+type popUserList = Action<'POP_USER_LIST', {index: number}>
 
 type Actions = changeApiKey | changeUserList | pushUserList | popUserList
 
@@ -74,7 +74,7 @@ const reducer = (state: State, action: Actions): State => {
       }
     }
 
-    case 'PUSH_USERLIST': {
+    case 'PUSH_USER_LIST': {
       let pushedUserlist = state.inputs.userList
       pushedUserlist.push('')
       return {
@@ -88,7 +88,7 @@ const reducer = (state: State, action: Actions): State => {
       }
     }
 
-    case 'POP_USERLIST': {
+    case 'POP_USER_LIST': {
       let popedUserList = state.inputs.userList
       popedUserList.splice(action.payload.index, 1)
 

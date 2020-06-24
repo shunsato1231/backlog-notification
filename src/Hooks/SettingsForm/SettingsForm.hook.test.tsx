@@ -47,7 +47,7 @@ describe('[CUSTOM HOOK] useSettings', () => {
 
     act(() => {
       result.current.dispatch({
-        type: 'POP_USERLIST',
+        type: 'POP_USER_LIST',
         payload: {
           index: 0
         }
@@ -72,7 +72,7 @@ describe('[CUSTOM HOOK] useSettings', () => {
     expect(result.current.state.inputs.userList.length).toBe(1)
 
     act(() => result.current.dispatch({
-      type: 'PUSH_USERLIST'
+      type: 'PUSH_USER_LIST'
     }))
     expect(result.current.state.inputs.userList.length).toBe(2)
   })
@@ -82,7 +82,7 @@ describe('[CUSTOM HOOK] useSettings', () => {
     expect(result.current.state.inputs.userList.length).toBe(3)
 
     act(() => result.current.dispatch({
-      type: 'POP_USERLIST',
+      type: 'POP_USER_LIST',
       payload: {
         index: 0
       }
@@ -91,7 +91,7 @@ describe('[CUSTOM HOOK] useSettings', () => {
     expect(result.current.state.errors.userList).toEqual(null)
 
     act(() => result.current.dispatch({
-      type: 'POP_USERLIST',
+      type: 'POP_USER_LIST',
       payload: {
         index: 1
       }
@@ -100,7 +100,7 @@ describe('[CUSTOM HOOK] useSettings', () => {
     expect(result.current.state.errors.userList).toEqual(errorMessages.userList)
 
     act(() => result.current.dispatch({
-      type: 'POP_USERLIST',
+      type: 'POP_USER_LIST',
       payload: {
         index: 0
       }

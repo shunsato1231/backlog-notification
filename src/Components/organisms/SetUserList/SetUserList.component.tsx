@@ -26,16 +26,18 @@ export const SetUserList = () => {
         {settings.state.inputs.userList.map((item, index) => 
           <div className={styles.inputWrapper} key={index}>
             <Input
+              data-testid='input'
               className={styles.input}
               theme='initialSetting'
               value = {item}
               onChange = {(event: React.ChangeEvent<HTMLInputElement>) => updateUserList(event, index)}
             />
             {settings.state.inputs.userList.length > 1 && <Button
+              data-testid='delete'
               theme='delete'
               className={styles.deleteButton}
               onClick={() => settings.dispatch({
-                type: 'POP_USERLIST',
+                type: 'POP_USER_LIST',
                 payload: {
                   index: index
                 }
@@ -46,16 +48,18 @@ export const SetUserList = () => {
         {settings.state.inputs.userList.length < 5 ? (
           <div className={styles.dummyInput}>
             <Button
+              data-testid='add'
               theme='add'
               className={styles.addButton}
               onClick={() => settings.dispatch({
-                type: 'PUSH_USERLIST'
+                type: 'PUSH_USER_LIST'
               })}
               ></Button>
           </div>
         ) : ''}
       </div>
       <Button
+        data-testid='next'
         className={styles.next}
         disabled={settings.state.errors.userList !== null}
         onClick={progress.Next}
@@ -64,6 +68,7 @@ export const SetUserList = () => {
       </Button>
 
       <Button
+        data-testid='back'
         theme='back'
         className={styles.back}
         onClick={progress.Prev}

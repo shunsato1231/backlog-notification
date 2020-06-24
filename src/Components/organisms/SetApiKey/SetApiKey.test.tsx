@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { SetApiKey } from './SetApiKey.component'
-import * as SettingsformContext from '../../../Hooks/SettingsForm/SettingsForm.context'
+import * as SettingsFormContext from '../../../Hooks/SettingsForm/SettingsForm.context'
 import { mount, shallow } from 'enzyme'
 import * as ProgressContext from '../../../Hooks/Progress/Progress.context'
 
@@ -19,7 +19,7 @@ describe('[ORGANISMS] SetApiKey', ()=> {
   it('should chnaged settings form status', () => {
     const dispatchMock = jest.fn();
 
-    jest.spyOn(SettingsformContext, 'useSettingsFormContext').mockImplementation(():any => {
+    jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
       return {
         state: {
           inputs: {
@@ -46,7 +46,7 @@ describe('[ORGANISMS] SetApiKey', ()=> {
 
   it('should go next step when input apiKey', () => {
     const mockNext = jest.fn()
-    jest.spyOn(SettingsformContext, 'useSettingsFormContext').mockImplementation(():any => {
+    jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
       return {
         state: {
           inputs: {
@@ -72,7 +72,7 @@ describe('[ORGANISMS] SetApiKey', ()=> {
 
   it('should next button disabled when uninput apiKey', () => {
     const mockNext = jest.fn()
-    jest.spyOn(SettingsformContext, 'useSettingsFormContext').mockImplementation(():any => {
+    jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
       return {
         state: {
           inputs: {
