@@ -6,7 +6,7 @@ import { Input } from '../../atoms/Form/Form.component'
 import { Button } from '../../atoms/Button/Button.component'
 import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
 
-export const SetUserList = () => {
+export const SetUserList: React.FC = () => {
   const progress = useProgressContext()
   const settings = useSettingsFormContext()
   const updateUserList = useCallback((event: React.ChangeEvent<HTMLInputElement>, index: number) => {
@@ -21,7 +21,7 @@ export const SetUserList = () => {
 
   return (
     <div className={styles.wrapper}>
-      <H2 theme='initialSetting-h2'>通知するユーザを指定</H2>
+      <H2 theme='initialSettings'>通知するユーザを指定</H2>
       <div className={styles.inputList}>
         {settings.state.inputs.userList.map((item, index) => 
           <div className={styles.inputWrapper} key={index}>

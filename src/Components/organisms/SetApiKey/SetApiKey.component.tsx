@@ -23,7 +23,7 @@ export const SetApiKey: React.FC = (): JSX.Element => {
   return (
     <div className={styles.wrapper}>
       <H2
-        theme='initialSetting-h2'
+        theme='initialSettings'
       >API Keyを入力</H2>
       <Input
         className={styles.input}

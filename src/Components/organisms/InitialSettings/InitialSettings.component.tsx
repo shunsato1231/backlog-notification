@@ -5,6 +5,7 @@ import { SliderWrapper } from '../../molecures/SliderWrapper/SliderWrapper.compo
 import styles from './InitialSettings.style.styl'
 import { SetApiKey } from '../SetApiKey/SetApiKey.component'
 import { SetUserList } from '../SetUserList/SetUserList.component'
+import { SettingsConfirm } from '../SettingsConfirm/SettingsConfirm.component'
 
 export const InitialSettings: React.FC = (): JSX.Element => {
 
@@ -27,7 +28,7 @@ export const InitialSettings: React.FC = (): JSX.Element => {
       >
         <SetApiKey />
         <SetUserList/>
-        <div>おねがいします</div>
+        <SettingsConfirm/>
       </SliderWrapper>
     </div>
   )
