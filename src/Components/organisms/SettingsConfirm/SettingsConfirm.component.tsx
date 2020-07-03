@@ -4,26 +4,15 @@ import { Button } from '../../atoms/Button/Button.component'
 import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
 import { H2, H3 } from '../../atoms/Heading/Heading.component'
 import styles from './SettingsConfirm.style.styl'
+import { useToastContext } from '../../../Hooks/Toast/Toast.context'
 
 export const SettingsConfirm: React.FC = () => {
   const settings = useSettingsFormContext()
   const progress = useProgressContext()
+  const toast = useToastContext()
 
   const done = () => {
-    // const errors = settings.state.errors
-    // if(errors.apiKey && errors.userList) {
-    //   Toast(errors.apiKey)
-    //   Toast(errors.userList)
-    //   progress.SetNextProgress(1)
-    // } else if (errors.apiKey) {
-    //   Toast(errors.apiKey)
-    //   progress.SetNextProgress(1)
-    // } else if (errors.userList) {
-    //   Toast(errors.userList)
-    //   progress.SetNextProgress(2)
-    // } else {
-    //   progress.Next
-    // }
+    toast.dispatch({type: 'PUSH_NOTIFICATION', payload: {message: String(toast.state.notifications.length + 1)}})
   }
 
   return (

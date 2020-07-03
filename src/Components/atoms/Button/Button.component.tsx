@@ -18,7 +18,7 @@ export const Button: React.FC<ButtonProps> = ({
   className,
   children,
   theme
-}) => (
+}): JSX.Element => (
   <button
     disabled={disabled}
     className = {theme ? `${styles[theme]} ${className || ''}` : `${styles.base} ${styles[color]} ${styles[size]} ${className || ''}`}

@@ -50,7 +50,7 @@ const reducer = (state: State, action: Actions): State => {
   switch(action.type) {
     case 'CHANGE_API_KEY': {
       return {
-        inputs: { ...state.inputs, ...action.payload},
+        inputs: { ...state.inputs, ...action.payload },
         errors: {
           ...state.errors,
           apiKey: required(action.payload.apiKey) ? null : errorMessages.apiKey
