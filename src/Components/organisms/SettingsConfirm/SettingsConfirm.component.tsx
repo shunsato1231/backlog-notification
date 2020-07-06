@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSettingsFormContext } from '../../../Hooks/SettingsForm/SettingsForm.context'
 import { Button } from '../../atoms/Button/Button.component'
 import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
@@ -11,8 +11,34 @@ export const SettingsConfirm: React.FC = () => {
   const progress = useProgressContext()
   const toast = useToastContext()
 
+  useEffect(() => {
+    if(progress.currentStep === 3) {
+      if(settings.state.errors.apiKey && settings.state.errors.userList) {
+        toast.dispatch({type: 'PUSH_NOTIFICATION', payload: {message: settings.state.errors.apiKey}})
+        toast.dispatch({type: 'PUSH_NOTIFICATION', payload: {message: settings.state.errors.userList}})
+        setTimeout(() => {
+          progress.SetNextProgress(1)
+        }, 30)
+      } else if(settings.state.errors.apiKey && !settings.state.errors.userList) {
+        toast.dispatch({type: 'PUSH_NOTIFICATION', payload: {message: settings.state.errors.apiKey}})
+        setTimeout(() => {
+          progress.SetNextProgress(1)
+        }, 30)
+      } else if(settings.state.errors.userList && !settings.state.errors.apiKey) {
+        toast.dispatch({type: 'PUSH_NOTIFICATION', payload: {message: settings.state.errors.userList}})
+        setTimeout(() => {
+          progress.SetNextProgress(2)
+        }, 30)
+      } else {
+        return
+      }
+    }
+  }, [progress.currentStep])
+
   const done = () => {
-    toast.dispatch({type: 'PUSH_NOTIFICATION', payload: {message: String(toast.state.notifications.length + 1)}})
+    if(!settings.state.errors.apiKey && !settings.state.errors.userList) {
+      progress.Next()
+    }
   }
 
   return (
@@ -31,7 +57,7 @@ export const SettingsConfirm: React.FC = () => {
     <Button
       data-testid='done'
       className={styles.done}
-      disabled={settings.state.errors.userList !== null}
+      disabled={settings.state.errors.apiKey !== null || settings.state.errors.userList !== null}
       onClick={done}
     >
       設定完了
