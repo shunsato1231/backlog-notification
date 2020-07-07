@@ -29,8 +29,6 @@ export const SettingsConfirm: React.FC = () => {
         setTimeout(() => {
           progress.SetNextProgress(2)
         }, 30)
-      } else {
-        return
       }
     }
   }, [progress.currentStep])
