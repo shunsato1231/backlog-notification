@@ -5,14 +5,16 @@ import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
 import { H2, H3 } from '../../atoms/Heading/Heading.component'
 import styles from './SettingsConfirm.style.styl'
 import { useToastContext } from '../../../Hooks/Toast/Toast.context'
+import { useAuthContext } from '../../../Hooks/Auth/Auth.context'
 
 export const SettingsConfirm: React.FC = () => {
   const settings = useSettingsFormContext()
   const progress = useProgressContext()
   const toast = useToastContext()
+  const auth = useAuthContext()
 
   useEffect(() => {
-    if(progress.currentStep === 3) {
+    if(progress.currentStep === 3 || progress.currentStep === 'finish') {
       if(settings.state.errors.apiKey && settings.state.errors.userList) {
         toast.dispatch({type: 'PUSH_NOTIFICATION', payload: {message: settings.state.errors.apiKey}})
         toast.dispatch({type: 'PUSH_NOTIFICATION', payload: {message: settings.state.errors.userList}})
@@ -36,6 +38,8 @@ export const SettingsConfirm: React.FC = () => {
   const done = () => {
     if(!settings.state.errors.apiKey && !settings.state.errors.userList) {
       progress.Next()
+      // todo 逐次処理
+      auth.setInfo(settings.state.inputs)
     }
   }
 

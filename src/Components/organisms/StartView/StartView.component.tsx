@@ -1,9 +1,11 @@
 import React from 'react'
 import styles from './StartView.style.styl'
 import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
+import { useAuthContext } from '../../../Hooks/Auth/Auth.context'
 
 export const StartView:React.FC = (): JSX.Element => {
   const progress = useProgressContext()
+  const auth = useAuthContext()
 
   return (
     <section
@@ -12,11 +14,19 @@ export const StartView:React.FC = (): JSX.Element => {
       >
       <h1 className={styles.title}>Backlog Notification</h1>
       <p className={styles.description}>バックログのお知らせをpush通知します</p>
-      <button
-        className={styles.button}
-        onClick={()=>{progress.Next()}}
-        data-testid='button'
-      >設定して利用開始する</button>
+      {auth.user ?
+        <button
+          className={styles.button}
+          onClick={()=>{progress.Next()}}
+          data-testid='button'
+        >設定して利用開始する</button>
+        :
+        <button
+          className={styles.button}
+          onClick={()=>{auth.signin()}}
+          data-testid='login-button'
+        >ログインして開始する</button>
+      }
     </section>
   )
 }
