@@ -33,6 +33,7 @@ export const Toast: React.FC = (): JSX.Element => {
           }}
         >
           <li
+            data-testid='toast'
             onClick={() => dismiss(index)}
             className={styles.toast}
           >

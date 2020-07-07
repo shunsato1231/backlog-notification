@@ -38,9 +38,9 @@ export interface ToastContextType {
   dispatch: React.Dispatch<Actions>
 }
 
-export const useToast = (): ToastContextType => {
+export const useToast = (initialNotifications?: string[]): ToastContextType => {
   const [state, dispatch] = useReducer(reducer,{
-    notifications: []
+    notifications: initialNotifications || []
   })
 
 return {state, dispatch}
