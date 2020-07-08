@@ -1,13 +1,14 @@
 import React from 'react'
 import { AuthContextType, useAuth } from "./Auth.hook"
 import { createContext, useContext } from 'react'
-import { useFirebase } from '../Firebase/Firebase.hook'
 
 /* istanbul ignore next */
 const defaultAuthContext: AuthContextType = {
   user: '',
   info: '',
-  setInfo: () => {},
+  setApiKey: async () => {},
+  setUserList: async () => {},
+  setToken: async () => {},
   signin: () => {},
   signout: () => {}
 }
@@ -18,8 +19,7 @@ export const useAuthContext = (): AuthContextType => useContext(AuthContext)
 export const AuthProvider: React.FC = ({
   children,
 }): JSX.Element => {
-  const { auth } = useFirebase()
-  const authCtx = useAuth(auth)
+  const authCtx = useAuth()
   return (
     <AuthContext.Provider value={authCtx}>
       {children}

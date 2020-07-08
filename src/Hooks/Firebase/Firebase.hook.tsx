@@ -38,7 +38,7 @@ export const useFirebase = (configuration?: FirebaseConfig) => {
 
   return {
     auth: firebase.auth(),
-    firestore: firebase.firestore(),
+    database: firebase.firestore(),
     messaging: messaging,
   }
 }

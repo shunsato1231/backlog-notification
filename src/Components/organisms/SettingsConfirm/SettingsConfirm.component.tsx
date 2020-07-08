@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useSettingsFormContext } from '../../../Hooks/SettingsForm/SettingsForm.context'
 import { Button } from '../../atoms/Button/Button.component'
 import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
@@ -12,6 +13,7 @@ export const SettingsConfirm: React.FC = () => {
   const progress = useProgressContext()
   const toast = useToastContext()
   const auth = useAuthContext()
+  const history = useHistory()
 
   useEffect(() => {
     if(progress.currentStep === 3 || progress.currentStep === 'finish') {
@@ -35,11 +37,12 @@ export const SettingsConfirm: React.FC = () => {
     }
   }, [progress.currentStep])
 
-  const done = () => {
+  const done = async () => {
     if(!settings.state.errors.apiKey && !settings.state.errors.userList) {
+      await auth.setApiKey(settings.state.inputs.apiKey)
+      await auth.setUserList(settings.state.inputs.userList)
       progress.Next()
-      // todo 逐次処理
-      auth.setInfo(settings.state.inputs)
+      setTimeout(() => {history.push('/')}, 100)
     }
   }
 
