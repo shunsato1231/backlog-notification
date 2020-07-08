@@ -1,9 +1,10 @@
 import firebase from 'firebase/app'
 import { useEffect, useState } from 'react'
 import { useFirebase } from '../Firebase/Firebase.hook'
+import { useLocalStorage } from '../LocalStorage/LocalStorage.hook'
 
 export interface AuthContextType {
-  user: string,
+  user: any,
   info: Object,
   setApiKey: (apiKey: string) => Promise<void>,
   setUserList: (userList: string[]) => Promise<void>,
@@ -21,7 +22,8 @@ type userInfoType = {
 export const useAuth = (): AuthContextType => {
   const { auth, database } = useFirebase()
 
-  const [user, setUser] = useState(null)
+  const [uid, setUid] = useLocalStorage('uid', null)
+
   const initialInfo: userInfoType = {
     apiKey: '',
     userList: [''],
@@ -32,9 +34,11 @@ export const useAuth = (): AuthContextType => {
   useEffect(() => {
     const listener = auth.onAuthStateChanged(
       user => {
-        user
-          ? setUser(user)
-          : setUser(null)
+        if(user) {
+          setUid(user.uid)
+        } else {
+          setUid(null)
+        }
       }
     )
 
@@ -46,7 +50,7 @@ export const useAuth = (): AuthContextType => {
     return auth
       .signInWithPopup(provider)
       .then(res => {
-        setUser(res.user)
+        setUid(res.user.uid)
         return res.user
       })
   }
@@ -55,14 +59,14 @@ export const useAuth = (): AuthContextType => {
     return auth
       .signOut()
       .then(() => {
-        setUser(false)
+        setUid(false)
       })
   }
 
   const setInfo = async () => {
     database
       .collection('users')
-      .doc(user.uid)
+      .doc(uid)
       .set(info)
   }
 
@@ -93,7 +97,7 @@ export const useAuth = (): AuthContextType => {
   }
 
   return {
-    user,
+    user: uid,
     info,
     setApiKey,
     setUserList,
