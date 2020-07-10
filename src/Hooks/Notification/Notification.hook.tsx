@@ -1,18 +1,31 @@
 import { useFirebase } from "../Firebase/Firebase.hook"
 import axios from 'axios'
+import { useEffect, useState } from 'react'
 
-export const useNotification = async(userId: string) => {
+export const useNotification = (userId: string) => {
   const { messaging } = useFirebase()
+  let notificationKey: string
+  const [isError, setIsError] = useState<boolean | string>(false)
 
   const permittionNotification = async () => {
-    await messaging.requestPermission()
-    const token = await messaging.getToken()
-    const notificationKey = await getNotificationKey(token)
+    await messaging.usePublicVapidKey(process.env.REACT_APP_PUBLIC_VAPID_KEY)
+    await messaging.requestPermission().catch((error) => {
+      setIsError('通知の許可を取れませんでした')
+      throw error
+    })
+    const token = await messaging.getToken().catch((error) => {
+      setIsError('トークンの取得に失敗しました')
+      throw error
+    })
+    const notificationKey = await registorTokenGroup(token).catch((error) => {
+      setIsError('NotificationKeyの取得に失敗しました')
+      throw error
+    })
     
     return notificationKey
   }
 
-  const getNotificationKey = async (token: string) => {
+  const registorTokenGroup = async (token: string) => {
     try {
       const res = await createTokenGroup(token)
       return res
@@ -20,8 +33,8 @@ export const useNotification = async(userId: string) => {
       try {
         const res = await addTokenGroup(token)
         return res
-      } catch {
-        throw 'トークングループへの登録に失敗しました'
+      } catch (error) {
+        throw error
       }
     }
   }
@@ -42,12 +55,12 @@ export const useNotification = async(userId: string) => {
       // @ts-ignore
       const res = await axios.post(url, data, {headers: headers, useCredentails: true})
       return res.data
-    } catch {
-      throw 'トークングループの作成に失敗'
+    } catch (error) {
+      throw error
     }
   }
 
-  const getNotinotificationKey = async () => {
+  const getNotificationKey = async () => {
     const url = process.env.REACT_APP_API_URL_BASE + "/fcm/notification?notification_key_name=" + userId
     let headers = {
       'Content-Type':'application/json',
@@ -58,14 +71,14 @@ export const useNotification = async(userId: string) => {
     try {
       const res = await axios.get(url, {headers: headers, data: {}})
       return res.data
-    } catch(error) {
-      throw 'NotificationKeyの取得に失敗しました'
+    } catch (error) {
+      throw error
     }
   }
 
   const addTokenGroup = async (token: string) => {
     const url = process.env.REACT_APP_API_URL_BASE + "/fcm/notification"
-    const notificationKey = await getNotinotificationKey()
+    const notificationKey = await getNotificationKey()
     const data = {
       "operation": "add",
       "notification_key_name": userId,
@@ -81,15 +94,36 @@ export const useNotification = async(userId: string) => {
       // @ts-ignore
       const res = await axios.post(url, data, {headers: headers, useCredentails: true})
       return res.data
-    } catch {
-      throw 'トークングループへの追加に失敗'
+    } catch (error) {
+      throw error
     }
   }
 
-  try {
-    const res = await permittionNotification()
-    return res.data
-  } catch(error) {
-    throw error
+  useEffect(() => {
+    const fnc = async() => {
+      if ('serviceWorker' in navigator) {
+        await navigator.serviceWorker
+          .register('/firebase-messaging-sw.js')
+          .then(reg => messaging.useServiceWorker(reg))
+          .catch((error: Error) => {
+            setIsError('ServiceWorkerの登録に失敗しました')
+            throw error
+          })
+      }
+
+      await permittionNotification()
+        .then(res => {
+          notificationKey = res.data
+        })
+        .catch((error: Error) => {
+          throw error
+        })
+    }
+    fnc()
+  }, [])
+
+  return {
+    notificationKey,
+    isError
   }
 }

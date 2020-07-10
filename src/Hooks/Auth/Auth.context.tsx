@@ -5,10 +5,14 @@ import { createContext, useContext } from 'react'
 /* istanbul ignore next */
 const defaultAuthContext: AuthContextType = {
   user: '',
-  info: '',
+  info: {
+    apiKey: '',
+    userList: [''],
+    notificationKey: ''
+  },
   setApiKey: async () => {},
   setUserList: async () => {},
-  setToken: async () => {},
+  setNotificationKey: async () => {},
   signin: () => {},
   signout: () => {}
 }

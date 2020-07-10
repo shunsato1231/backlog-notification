@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --hot --inline --mode development",
-    "build": "webpack",
+    "build": "webpack --mode production",
     "test": "jest"
   },
   "license": "MIT",
@@ -49,7 +49,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "firebase": "^7.15.5",
+    "firebase": "^7.16.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }

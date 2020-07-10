@@ -46,7 +46,8 @@ const config = {
     historyApiFallback: true,
     contentBase: dist,
     host: '0.0.0.0'
-  }
+  },
+  performance: { hints: false }
 }
 
 module.exports = config

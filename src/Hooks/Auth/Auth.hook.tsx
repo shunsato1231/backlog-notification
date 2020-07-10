@@ -1,22 +1,22 @@
 import firebase from 'firebase/app'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useFirebase } from '../Firebase/Firebase.hook'
 import { useLocalStorage } from '../LocalStorage/LocalStorage.hook'
 
 export interface AuthContextType {
   user: any,
-  info: Object,
+  info: userInfoType,
   setApiKey: (apiKey: string) => Promise<void>,
   setUserList: (userList: string[]) => Promise<void>,
-  setToken: (token: string) => Promise<void>,
+  setNotificationKey: (notificationKey: string) => Promise<void>,
   signin: () => void,
   signout: () => void
 }
 
-type userInfoType = {
+export type userInfoType = {
   apiKey: string,
   userList: string[],
-  token: string
+  notificationKey: string
 }
 
 export const useAuth = (): AuthContextType => {
@@ -27,17 +27,19 @@ export const useAuth = (): AuthContextType => {
   const initialInfo: userInfoType = {
     apiKey: '',
     userList: [''],
-    token: ''
+    notificationKey: ''
   }
-  const [info, setInfoState] = useState<userInfoType>(initialInfo)
+  const [info, setInfoState] = useLocalStorage('info', initialInfo)
 
   useEffect(() => {
     const listener = auth.onAuthStateChanged(
       user => {
         if(user) {
           setUid(user.uid)
+          getInfo()
         } else {
           setUid(null)
+          setInfoState(initialInfo)
         }
       }
     )
@@ -70,6 +72,15 @@ export const useAuth = (): AuthContextType => {
       .set(info)
   }
 
+  const getInfo = async () => {
+    const snapshot = await database
+      .collection('users')
+      .doc(uid)
+      .get()
+
+      setInfoState(snapshot.data() as userInfoType)
+  }
+
   const setApiKey = async (apiKey: string) => {
     let newInfo = info
     newInfo.apiKey = apiKey
@@ -88,9 +99,9 @@ export const useAuth = (): AuthContextType => {
     await setInfo()
   }
 
-  const setToken = async (token: string) => {
+  const setNotificationKey = async (notificationKey: string) => {
     let newInfo = info
-    newInfo.token = token
+    newInfo.notificationKey = notificationKey
 
     setInfoState(newInfo)
     await setInfo()
@@ -101,7 +112,7 @@ export const useAuth = (): AuthContextType => {
     info,
     setApiKey,
     setUserList,
-    setToken,
+    setNotificationKey,
     signin,
     signout
   }
