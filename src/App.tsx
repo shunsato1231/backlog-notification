@@ -4,8 +4,8 @@ import { Introduction } from './Components/pages/Introduction/Introduction.compo
 import { ToastProvider } from './Hooks/Toast/Toast.context'
 import { AuthProvider } from './Hooks/Auth/Auth.context'
 import { Dashboard } from './Components/pages/Dashboard/Dashboard.component'
-import { PrivateRoute } from './PrivateRoute'
-import { GuestRoute } from './GuestRoute'
+import { PrivateRoute } from './Routes/PrivateRoute'
+import { GuestRoute } from './Routes/GuestRoute'
 
 
 const App: React.SFC = () => {
