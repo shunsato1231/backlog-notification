@@ -39,9 +39,9 @@ export const SettingsConfirm: React.FC = () => {
 
   const done = async () => {
     if(!settings.state.errors.apiKey && !settings.state.errors.userList) {
+      progress.Next()
       await auth.setApiKey(settings.state.inputs.apiKey)
       await auth.setUserList(settings.state.inputs.userList)
-      progress.Next()
       setTimeout(() => {history.push('/')}, 100)
     }
   }
@@ -63,7 +63,7 @@ export const SettingsConfirm: React.FC = () => {
       data-testid='done'
       className={styles.done}
       disabled={settings.state.errors.apiKey !== null || settings.state.errors.userList !== null}
-      onClick={done}
+      onClick={() => {done()}}
     >
       設定完了
     </Button>

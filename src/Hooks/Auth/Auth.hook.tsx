@@ -33,13 +33,12 @@ export const useAuth = (): AuthContextType => {
 
   useEffect(() => {
     const listener = auth.onAuthStateChanged(
-      user => {
+      async (user) => {
         if(user) {
-          setUid(user.uid)
-          getInfo()
+          await setUid(user.uid)
         } else {
-          setUid(null)
-          setInfoState(initialInfo)
+          await setUid(null)
+          await setInfoState(initialInfo)
         }
       }
     )
@@ -47,12 +46,24 @@ export const useAuth = (): AuthContextType => {
     return () => listener()
   }, [auth])
 
+  useEffect(() => {
+    const fnc = async () => {
+      if(uid) {
+        getInfo()
+      } else {
+        await setInfoState(initialInfo)
+      }
+    }
+
+    fnc()
+  }, [uid])
+
   const signin = () => {
     let provider = new firebase.auth.GoogleAuthProvider
     return auth
       .signInWithPopup(provider)
-      .then(res => {
-        setUid(res.user.uid)
+      .then(async (res) => {
+        await setUid(res.user.uid)
         return res.user
       })
   }
@@ -60,8 +71,8 @@ export const useAuth = (): AuthContextType => {
   const signout = () => {
     return auth
       .signOut()
-      .then(() => {
-        setUid(false)
+      .then(async () => {
+        await setUid(null)
       })
   }
 
@@ -78,15 +89,18 @@ export const useAuth = (): AuthContextType => {
       .doc(uid)
       .get()
 
-      setInfoState(snapshot.data() as userInfoType)
+      const data = snapshot.data()
+        ? snapshot.data() as userInfoType
+        : initialInfo
+
+      await setInfoState(data)
   }
 
   const setApiKey = async (apiKey: string) => {
     let newInfo = info
     newInfo.apiKey = apiKey
 
-    setInfoState(newInfo)
-
+    await setInfoState(newInfo)
     await setInfo()
   }
 
@@ -94,8 +108,7 @@ export const useAuth = (): AuthContextType => {
     let newInfo = info
     newInfo.userList = userList
 
-    setInfoState(newInfo)
-
+    await setInfoState(newInfo)
     await setInfo()
   }
 
@@ -103,7 +116,7 @@ export const useAuth = (): AuthContextType => {
     let newInfo = info
     newInfo.notificationKey = notificationKey
 
-    setInfoState(newInfo)
+    await setInfoState(newInfo)
     await setInfo()
   }
 

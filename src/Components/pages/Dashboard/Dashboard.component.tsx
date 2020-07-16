@@ -17,9 +17,7 @@ export const Dashboard: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     if(notificationKey) {
-      console.log('取得できた')
-    } else {
-      console.log('取得できない')
+      auth.setNotificationKey(notificationKey)
     }
   }, [notificationKey])
 

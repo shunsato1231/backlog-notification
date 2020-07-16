@@ -13,24 +13,28 @@ interface Config {
   storageBucket: string
   messagingSenderId: string
   appId: string
+  measurementId: string
 }
 
 export type FirebaseConfig = Required<Config>
 
 export const useFirebase = (configuration?: FirebaseConfig) => {
-  let config = configuration || {
-    apiKey: process.env.REACT_APP_FIREBASE_KEY,
+  const config = configuration || {
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
     databaseURL: process.env.REACT_APP_FIREBASE_DATABASE,
     projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
     storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
-    appId: process.env.REACT_APP_FIREBASE_SENDER_ID
+    appId: process.env.REACT_APP_FIREBASE_SENDER_ID,
+    measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
   }
 
-  !firebase.apps.length
+  const initializeApp = !firebase.apps.length
+
+  initializeApp
     ? firebase.initializeApp({ ...config })
-    : firebase.app();
+    : firebase.app()
 
   let messaging = firebase.messaging.isSupported()
     ? firebase.messaging()
@@ -40,5 +44,6 @@ export const useFirebase = (configuration?: FirebaseConfig) => {
     auth: firebase.auth(),
     database: firebase.firestore(),
     messaging: messaging,
+    initializeApp
   }
 }
