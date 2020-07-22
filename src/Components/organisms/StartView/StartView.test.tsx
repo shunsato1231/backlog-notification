@@ -43,7 +43,7 @@ describe('[ORGANISMS] StartView', ()=> {
 
     jest.spyOn(AuthContext, 'useAuthContext').mockImplementation(():any => {
       return {
-        user: 'testUserId'
+        uid: 'testUserId'
       }
     })
 
