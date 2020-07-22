@@ -21,7 +21,7 @@ describe('[ROUTES] GuestRoute', () => {
   it('should return redirect component when login app', () => {
     jest.spyOn(AuthContext, 'useAuthContext').mockImplementation(():any => {
       return {
-        user: 'testID',
+        uid: 'testID',
         info: {
           apiKey: 'testKey',
           userList: ['testUser'],
@@ -37,7 +37,7 @@ describe('[ROUTES] GuestRoute', () => {
   it('should return route component when not login app', () => {
     jest.spyOn(AuthContext, 'useAuthContext').mockImplementation(():any => {
       return {
-        user: '',
+        uid: '',
         info: {
           apiKey: '',
           userList: [''],
