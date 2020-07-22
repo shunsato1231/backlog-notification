@@ -4,7 +4,7 @@ import { useFirebase } from '../Firebase/Firebase.hook'
 import { useLocalStorage } from '../LocalStorage/LocalStorage.hook'
 
 export interface AuthContextType {
-  user: any,
+  uid: string,
   info: userInfoType,
   setApiKey: (apiKey: string) => Promise<void>,
   setUserList: (userList: string[]) => Promise<void>,
@@ -121,7 +121,7 @@ export const useAuth = (): AuthContextType => {
   }
 
   return {
-    user: uid,
+    uid,
     info,
     setApiKey,
     setUserList,

@@ -4,7 +4,7 @@ import { createContext, useContext } from 'react'
 
 /* istanbul ignore next */
 const defaultAuthContext: AuthContextType = {
-  user: '',
+  uid: '',
   info: {
     apiKey: '',
     userList: [''],
