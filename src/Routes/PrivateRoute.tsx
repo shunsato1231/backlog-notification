@@ -15,7 +15,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({
 }): JSX.Element => {
   const auth = useAuthContext()
   
-  return auth.user && auth.info.apiKey && auth.info.userList[0]
+  return auth.uid && auth.info.apiKey && auth.info.userList[0]
     ? <Route path={path} component={component} exact/>
     : <Redirect to={toRedirect} />
 }

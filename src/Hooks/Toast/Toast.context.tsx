@@ -18,7 +18,6 @@ export const ToastProvider: React.FC = ({
   children
 }):JSX.Element => {
   const {state, dispatch}  = useToast()
-
   return (
     <ToastContext.Provider value={{state, dispatch}}>
       <Toast/>

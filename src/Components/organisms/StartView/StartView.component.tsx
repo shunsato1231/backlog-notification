@@ -14,7 +14,7 @@ export const StartView:React.FC = (): JSX.Element => {
       >
       <h1 className={styles.title}>Backlog Notification</h1>
       <p className={styles.description}>バックログのお知らせをpush通知します</p>
-      {auth.user ?
+      {auth.uid ?
         <button
           className={styles.button}
           onClick={()=>{progress.Next()}}
@@ -24,7 +24,7 @@ export const StartView:React.FC = (): JSX.Element => {
         <button
           className={styles.button}
           onClick={()=>{auth.signin()}}
-          data-testid='login-button'
+          data-testid='signin-button'
         >ログインして開始する</button>
       }
     </section>

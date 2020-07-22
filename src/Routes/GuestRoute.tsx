@@ -14,7 +14,7 @@ export const GuestRoute: React.FC<GuestRouteProps> = ({
   toRedirect
 }): JSX.Element => {
   const auth = useAuthContext()
-  return auth.user && auth.info.apiKey && auth.info.userList[0]
+  return auth.uid && auth.info.apiKey && auth.info.userList[0]
     ? <Redirect to={toRedirect} />
     : <Route path={path} component={component} exact/>
 }

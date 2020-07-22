@@ -1,12 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Router } from 'react-router-dom';
 import { SettingsConfirm, } from './SettingsConfirm.component'
 import * as SettingsFormContext from '../../../Hooks/SettingsForm/SettingsForm.context'
 import { mount } from 'enzyme'
 import * as ProgressContext from '../../../Hooks/Progress/Progress.context'
 import * as ToastContext from '../../../Hooks/Toast/Toast.context'
 import { errorMessages } from '../../../Hooks/SettingsForm/SettingsForm.hook'
-
+import { act } from '@testing-library/react-hooks';
 
 const sel = (id: string) => {
   return `[data-testid="${id}"]`
@@ -165,15 +166,15 @@ describe('[ORGANISMS] SettingsConfirm', ()=> {
     expect(setNextProgressMock).toBeCalledWith(2)
   })
 
-  it('should next progress when click done when full apiKey and userList', () => {
-    const nextMock = jest.fn()
-
+  it('should next progress when click done when full apiKey and userList', (done) => {
+    const apiKey = 'test'
+    const userList = ['test1', 'test2']
     jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
       return {
         state: {
           inputs: {
-            apiKey: 'test',
-            userList: ['test1', 'test2']
+            apiKey: apiKey,
+            userList: userList
           },
           errors: {
             apiKey: null,
@@ -183,6 +184,7 @@ describe('[ORGANISMS] SettingsConfirm', ()=> {
       }
     })
 
+    const nextMock = jest.fn()
     jest.spyOn(ProgressContext, 'useProgressContext').mockImplementation(():any => {
       return {
         currentStep: 3,
@@ -190,9 +192,24 @@ describe('[ORGANISMS] SettingsConfirm', ()=> {
       }
     })
 
-    let wrapper = mount(<SettingsConfirm />)
 
-    wrapper.find(sel('done')).simulate('click')
-    expect(nextMock).toBeCalled()
+    const historyMock = { push: jest.fn(), location: {}, listen: jest.fn() }
+    const wrapper = mount(
+      <Router history={historyMock}>
+        <SettingsConfirm />
+      </Router>
+    )
+
+    const button = wrapper.find(sel('done'))
+    act(() => {
+      button.simulate('click')
+    })
+
+    setImmediate(() => {
+      expect(nextMock).toBeCalled()
+      jest.runAllTimers()
+      expect(historyMock.push.mock.calls[0][0]).toEqual('/')
+      done()
+    })
   })
 })

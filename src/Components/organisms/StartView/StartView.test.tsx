@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { shallow } from 'enzyme'
 import { StartView } from './StartView.component';
 import * as ProgressContext from '../../../Hooks/Progress/Progress.context'
+import * as AuthContext from '../../../Hooks/Auth/Auth.context';
 
 const sel = (id: string) => {
   return `[data-testid="${id}"]`
@@ -14,12 +15,35 @@ describe('[ORGANISMS] StartView', ()=> {
     ReactDOM.render(<StartView />, div);
     ReactDOM.unmountComponentAtNode(div);
   })
-  it('should call next when button click', ()=> {
+
+  it('should call signin when button click when not logged in', ()=> {
+    const signinMock = jest.fn();
+
+    jest.spyOn(AuthContext, 'useAuthContext').mockImplementation(():any => {
+      return {
+        user: null,
+        signin: signinMock
+      }
+    })
+
+    const wrapper = shallow(<StartView />)
+
+    wrapper.find(sel('signin-button')).simulate('click')
+    expect(signinMock).toBeCalled()
+  })
+
+  it('should call next when button click when logged in', ()=> {
     const nextMock = jest.fn();
 
     jest.spyOn(ProgressContext, 'useProgressContext').mockImplementation(():any => {
       return {
         Next: nextMock,
+      }
+    })
+
+    jest.spyOn(AuthContext, 'useAuthContext').mockImplementation(():any => {
+      return {
+        user: 'testUserId'
       }
     })
 
