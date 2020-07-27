@@ -18,8 +18,8 @@ interface Config {
 
 export type FirebaseConfig = Required<Config>
 
-export const useFirebase = (configuration?: FirebaseConfig) => {
-  const config = configuration || {
+export const useFirebase = () => {
+  const config = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
     databaseURL: process.env.REACT_APP_FIREBASE_DATABASE,
