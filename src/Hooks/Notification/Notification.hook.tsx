@@ -2,6 +2,14 @@ import { useFirebase } from "../Firebase/Firebase.hook"
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 
+export const errorMessages = {
+  permission: '通知の許可を取れませんでした',
+  token: 'トークンの取得に失敗しました',
+  createTokenGroup: 'トークンブループの作成に失敗しました',
+  getNotificationKey: '通知キーの取得に失敗しました',
+  addTokenGroup: 'トークンブループの追加に失敗しました'
+}
+
 export const useNotification = (userId: string) => {
   const { messaging, initializeApp } = useFirebase()
   const [notificationKey, setNotificationKey] = useState<string>(null)
@@ -9,17 +17,16 @@ export const useNotification = (userId: string) => {
 
   const permittionNotification = async () => {
     await messaging.requestPermission().catch((error) => {
-      setIsError('通知の許可を取れませんでした')
-      throw error
+      console.error(error)
+      throw errorMessages.permission
     })
 
     const token = await messaging.getToken().catch((error) => {
-      setIsError('トークンの取得に失敗しました')
-      throw error
+      console.error(error)
+      throw errorMessages.token
     })
 
     const notificationKey = await registorTokenGroup(token).catch((error) => {
-      setIsError('NotificationKeyの取得に失敗しました')
       throw error
     })
 
@@ -62,7 +69,8 @@ export const useNotification = (userId: string) => {
       })
       return res.data["notification_key"]
     } catch (error) {
-      throw error
+      console.error(error)
+      throw errorMessages.createTokenGroup
     }
   }
 
@@ -83,7 +91,8 @@ export const useNotification = (userId: string) => {
       })
       return res.data["notification_key"]
     } catch (error) {
-      throw error
+      console.error(error)
+      throw errorMessages.getNotificationKey
     }
   }
 
@@ -111,7 +120,8 @@ export const useNotification = (userId: string) => {
       })
       return res.data["notification_key"]
     } catch (error) {
-      throw error
+      console.error(error)
+      throw errorMessages.addTokenGroup
     }
   }
 
@@ -121,8 +131,8 @@ export const useNotification = (userId: string) => {
         .then(res => {
           setNotificationKey(res)
         })
-        .catch((error: Error) => {
-          throw error
+        .catch((error) => {
+          setIsError(error)
         })
     }
     fnc()

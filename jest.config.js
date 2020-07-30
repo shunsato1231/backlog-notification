@@ -11,7 +11,7 @@ module.exports = {
         '^.+\\.(ts|tsx)$': 'ts-jest'
     },
     setupFiles: [
-        '<rootDir>/jest.setupEnzyme.ts'
+        '<rootDir>/jest.setup.ts'
     ],
     globals: {
         'ts-jest': {
