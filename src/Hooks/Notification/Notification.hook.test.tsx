@@ -77,7 +77,13 @@ describe('[CUSTOM HOOK] useNotification', () => {
     messagingMock.mockGetTokenReturn = 'testToken'
 
     const {result, waitForNextUpdate} = renderHook(() => useNotification('uid'))
-    await act(async () => { await waitForNextUpdate() })
+    await act(async () => {
+      await waitForNextUpdate()
+
+      let load_event = document.createEvent("HTMLEvents")
+      load_event.initEvent("load", true, true)
+      window.document.dispatchEvent(load_event)
+    })
     // serviceworker
     expect(navigator.serviceWorker.register).toHaveBeenCalledWith('/firebase-messaging-sw.js')
     expect(messagingMock.mockUseServiceWorker).toHaveBeenCalled()
