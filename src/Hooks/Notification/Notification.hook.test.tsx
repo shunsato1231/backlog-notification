@@ -20,12 +20,12 @@ describe('[CUSTOM HOOK] useNotification', () => {
     }
   })
 
-  let mockCreateTokenGreapFlag: boolean // 初回読み込み時のみ成功
+  let mockCreateTokenGroupFlag: boolean // 初回読み込み時のみ成功
   let mockGetNotificationKeyFlag: boolean
   let mockAddTokenGropuFlag: boolean
 
   beforeEach(() => {
-    mockCreateTokenGreapFlag = false // 初回読み込み時のみ成功
+    mockCreateTokenGroupFlag = false // 初回読み込み時のみ成功
     mockGetNotificationKeyFlag = true
     mockAddTokenGropuFlag = true
 
@@ -41,7 +41,7 @@ describe('[CUSTOM HOOK] useNotification', () => {
 
       switch (method) {
         case 'createTokenGroup':
-          return mockCreateTokenGreapFlag
+          return mockCreateTokenGroupFlag
             ? Promise.resolve({data: { 'notification_key': testNotificationKey }})
             : Promise.reject('mock Error')
         case 'getNotificationKey':
@@ -73,7 +73,7 @@ describe('[CUSTOM HOOK] useNotification', () => {
 
   it('setting notification when initial loading', async () => {
     initial = true
-    mockCreateTokenGreapFlag = true
+    mockCreateTokenGroupFlag = true
     messagingMock.mockGetTokenReturn = 'testToken'
 
     const {result, waitForNextUpdate} = renderHook(() => useNotification('uid'))
