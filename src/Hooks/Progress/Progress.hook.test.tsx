@@ -1,7 +1,34 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { renderHook, act } from '@testing-library/react-hooks';
-import { useProgress, StepObjType } from './Progress.hook';
+import { useProgress, StepObjType, StepNumType } from './Progress.hook';
+import { ProgressProvider } from './Progress.context';
 
 describe('[CUSTOM HOOK] useProgress', () => {
+  it('provider renders without crashing', () => {
+    const initialProgressList: StepObjType[] = [
+      {
+        name: 'step1',
+        status: 'pending'
+      },
+      {
+        name: 'step2',
+        status: 'pending'
+      },
+      {
+        name: 'step3',
+        status: 'pending'
+      }
+    ]
+    const initialStep: StepNumType = 'allPending'
+
+    const div = document.createElement('div')
+    ReactDOM.render(<ProgressProvider
+      list={initialProgressList}
+      step={initialStep}/>, div)
+    ReactDOM.unmountComponentAtNode(div)
+  })
+
   it('should increment step', () => {
     const initialProgress: StepObjType[] = [
       {

@@ -1,9 +1,17 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useToast } from './Toast.hook';
+import { ToastProvider } from './Toast.context';
 
 describe('[CUSTOM HOOK] useToast', () => {
-  it('initial notification', () => {
+  it('provider renders without crashing', () => {
+    const div = document.createElement('div')
+    ReactDOM.render(<ToastProvider/>, div)
+    ReactDOM.unmountComponentAtNode(div)
+  })
 
+  it('initial notification', () => {
     const { result } = renderHook(() => useToast())
 
     expect(result.current.state.notifications).toEqual([])

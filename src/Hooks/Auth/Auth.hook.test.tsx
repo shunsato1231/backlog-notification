@@ -1,8 +1,11 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useAuth } from './Auth.hook';
 import * as firebase from '../Firebase/Firebase.hook'
 import FirestoreMock from '../../test_helpers/firebase/firestore.mock';
 import AuthMock from '../../test_helpers/firebase/auth.mock';
+import { AuthProvider } from './Auth.context';
 
 describe('[CUSTOM HOOK] useAuth', () => {
   const firestoreMock = new FirestoreMock
@@ -18,6 +21,12 @@ describe('[CUSTOM HOOK] useAuth', () => {
 
     firestoreMock.reset()
     authMock.reset()
+  })
+
+  it('provider renders without crashing', () => {
+    const div = document.createElement('div')
+    ReactDOM.render(<AuthProvider/>, div)
+    ReactDOM.unmountComponentAtNode(div)
   })
 
   it('set apikey', () => {

@@ -1,9 +1,19 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useSettingsForm, errorMessages } from './SettingsForm.hook';
+import { SettingsFormProvider } from './SettingsForm.context';
 
 describe('[CUSTOM HOOK] useSettings', () => {
-  it('validate initial', () => {
+  it('provider renders without crashing', () => {
+    const div = document.createElement('div')
+    ReactDOM.render(<SettingsFormProvider 
+      apiKey={''}
+      userList={['']}/>, div)
+    ReactDOM.unmountComponentAtNode(div)
+  })
 
+  it('validate initial', () => {
     const { result } = renderHook(() => useSettingsForm())
 
     expect(result.current.state.errors.apiKey).toEqual(errorMessages.apiKey)
