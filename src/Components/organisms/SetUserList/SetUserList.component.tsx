@@ -26,7 +26,7 @@ export const SetUserList: React.FC = () => {
         {settings.state.inputs.userList.map((item, index) => 
           <div className={styles.inputWrapper} key={index}>
             <Input
-              data-testid='input'
+              data-testid='inputUser'
               className={styles.input}
               theme='initialSetting'
               value = {item}

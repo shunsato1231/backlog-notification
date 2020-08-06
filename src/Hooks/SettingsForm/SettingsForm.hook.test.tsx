@@ -7,7 +7,8 @@ import { SettingsFormProvider } from './SettingsForm.context';
 describe('[CUSTOM HOOK] useSettings', () => {
   it('provider renders without crashing', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<SettingsFormProvider 
+    ReactDOM.render(<SettingsFormProvider
+      spaceId={''}
       apiKey={''}
       userList={['']}/>, div)
     ReactDOM.unmountComponentAtNode(div)
@@ -20,8 +21,39 @@ describe('[CUSTOM HOOK] useSettings', () => {
     expect(result.current.state.errors.userList).toEqual(errorMessages.userList)
   })
 
+  it('validate spaceId', () => {
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', userList: ['']}))
+
+    act(() => result.current.dispatch({
+      type: 'CHANGE_SPACE_ID',
+      payload: {
+        spaceId: '',
+      }
+    }))
+    expect(result.current.state.inputs.spaceId).toEqual('')
+    expect(result.current.state.errors.spaceId).toEqual(errorMessages.spaceId)
+
+    act(() => result.current.dispatch({
+      type: 'CHANGE_SPACE_ID',
+      payload: {
+        spaceId: 'test'
+      }
+    }))
+    expect(result.current.state.inputs.spaceId).toEqual('test')
+    expect(result.current.state.errors.spaceId).toEqual(null)
+
+    act(() => result.current.dispatch({
+      type: 'CHANGE_SPACE_ID',
+      payload: {
+        spaceId: 'testあああ'
+      }
+    }))
+    expect(result.current.state.inputs.spaceId).toEqual('testあああ')
+    expect(result.current.state.errors.spaceId).toEqual(errorMessages.spaceId)
+  })
+
   it('validate apiKey', () => {
-    const { result } = renderHook(() => useSettingsForm({apiKey: '', userList: ['']}))
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', userList: ['']}))
 
     act(() => result.current.dispatch({
       type: 'CHANGE_API_KEY',
@@ -43,7 +75,7 @@ describe('[CUSTOM HOOK] useSettings', () => {
   })
 
   it('validate userList', () => {
-    const { result } = renderHook(() => useSettingsForm({apiKey: '', userList: ['', '']}))
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', userList: ['', '']}))
 
     act(() => result.current.dispatch({
       type: 'CHANGE_USER_LIST',
@@ -78,7 +110,7 @@ describe('[CUSTOM HOOK] useSettings', () => {
   })
 
   it('push userList', () => {
-    const { result } = renderHook(() => useSettingsForm({apiKey: '', userList: ['']}))
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', userList: ['']}))
     expect(result.current.state.inputs.userList.length).toBe(1)
 
     act(() => result.current.dispatch({
@@ -88,7 +120,7 @@ describe('[CUSTOM HOOK] useSettings', () => {
   })
 
   it('pop userList', () => {
-    const { result } = renderHook(() => useSettingsForm({apiKey: '', userList: ['', '', 'test user']}))
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', userList: ['', '', 'test user']}))
     expect(result.current.state.inputs.userList.length).toBe(3)
 
     act(() => result.current.dispatch({

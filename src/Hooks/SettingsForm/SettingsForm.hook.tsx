@@ -2,6 +2,7 @@ import React from 'react'
 import { useReducer } from "react"
 
 type Settings = {
+  spaceId: string,
   apiKey: string,
   userList: string[]
 }
@@ -11,6 +12,10 @@ interface Action<type, payload = {}, errors = {}> {
   payload?: payload,
   errors?: errors
 }
+
+type changeSpaceId = Action<'CHANGE_SPACE_ID', {
+  spaceId: string,
+}>
 
 type changeApiKey = Action<'CHANGE_API_KEY', {
   apiKey: string,
@@ -24,20 +29,23 @@ type changeUserList = Action<'CHANGE_USER_LIST', {
 type pushUserList = Action<'PUSH_USER_LIST'>
 type popUserList = Action<'POP_USER_LIST', {index: number}>
 
-type Actions = changeApiKey | changeUserList | pushUserList | popUserList
+type Actions = changeSpaceId | changeApiKey | changeUserList | pushUserList | popUserList
 
 interface State {
   inputs: {
+    spaceId: string,
     apiKey: string,
     userList: string[]
   },
   errors: {
+    spaceId: string
     apiKey: string,
     userList: string
   }
 }
 
 export const errorMessages = {
+  spaceId: 'スペースIDは半角英数・ハイフンからなる3〜10文字で入力してください',
   apiKey: 'API Keyが入力されていません。',
   userList: '通知をするユーザ名が入力されていません。'
 }
@@ -46,8 +54,20 @@ const required = (value) => {
   return value === null || value === undefined || value === '' ? false : true
 }
 
+const spaceIdPattern = /^[0-9a-zA-Z-]{3,10}$/
+
 const reducer = (state: State, action: Actions): State => {
   switch(action.type) {
+    case 'CHANGE_SPACE_ID': {
+      return {
+        inputs: { ...state.inputs, ...action.payload },
+        errors: {
+          ...state.errors,
+          spaceId: spaceIdPattern.test(action.payload.spaceId) ? null : errorMessages.spaceId
+        }
+      }
+    }
+
     case 'CHANGE_API_KEY': {
       return {
         inputs: { ...state.inputs, ...action.payload },
@@ -79,6 +99,7 @@ const reducer = (state: State, action: Actions): State => {
       pushedUserlist.push('')
       return {
         inputs: {
+          spaceId: state.inputs.spaceId,
           apiKey: state.inputs.apiKey,
           userList: pushedUserlist
         },
@@ -97,6 +118,7 @@ const reducer = (state: State, action: Actions): State => {
 
       return {
         inputs: {
+          spaceId: state.inputs.spaceId,
           apiKey: state.inputs.apiKey,
           userList: popedUserList
         },
@@ -118,10 +140,12 @@ export interface SettingsContextType {
 export const useSettingsForm = (initialState?: Settings): SettingsContextType => {
   const [state, dispatch] = useReducer(reducer, {
       inputs: initialState || {
+        spaceId: '',
         apiKey: '',
         userList: []
       },
       errors: {
+        spaceId: errorMessages.spaceId,
         apiKey: errorMessages.apiKey,
         userList: errorMessages.userList
       }

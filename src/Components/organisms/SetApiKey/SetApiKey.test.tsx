@@ -16,7 +16,35 @@ describe('[ORGANISMS] SetApiKey', ()=> {
     ReactDOM.unmountComponentAtNode(div)
   })
 
-  it('should chnaged settings form status', () => {
+  it('should chnaged settings form status when change spaceId input', () => {
+    const dispatchMock = jest.fn();
+
+    jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
+      return {
+        state: {
+          inputs: {
+            spaceId: 'test Id'
+          },
+          errors: {
+            spaceId: ''
+          }
+        },
+        dispatch: dispatchMock,
+      }
+    })
+
+    const wrapper = mount(<SetApiKey />)
+    const input = wrapper.find(sel('inputSpaceId')).find('input')
+    input.simulate('change')
+    expect(dispatchMock).toBeCalledWith({
+      type: 'CHANGE_SPACE_ID',
+      payload: {
+        spaceId: 'test Id'
+      }
+    })
+  })
+
+  it('should chnaged settings form status when change apiKey input', () => {
     const dispatchMock = jest.fn();
 
     jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
@@ -34,7 +62,7 @@ describe('[ORGANISMS] SetApiKey', ()=> {
     })
 
     const wrapper = mount(<SetApiKey />)
-    const input = wrapper.find(sel('input'))
+    const input = wrapper.find(sel('inputApiKey')).find('input')
     input.simulate('change')
     expect(dispatchMock).toBeCalledWith({
       type: 'CHANGE_API_KEY',
@@ -44,15 +72,17 @@ describe('[ORGANISMS] SetApiKey', ()=> {
     })
   })
 
-  it('should go next step when input apiKey', () => {
+  it('should go next step when input apiKey and spaceId', () => {
     const mockNext = jest.fn()
     jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
       return {
         state: {
           inputs: {
+            spaceId: 'test-1',
             apiKey: 'test Key'
           },
           errors: {
+            spaceId: '',
             apiKey: ''
           }
         }
@@ -70,7 +100,7 @@ describe('[ORGANISMS] SetApiKey', ()=> {
     expect(mockNext).toBeCalled()
   })
 
-  it('should next button disabled when uninput apiKey', () => {
+  it('should next button disabled when error apiKey', () => {
     const mockNext = jest.fn()
     jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
       return {
@@ -80,6 +110,32 @@ describe('[ORGANISMS] SetApiKey', ()=> {
           },
           errors: {
             apiKey: 'error'
+          }
+        }
+      }
+    })
+
+    jest.spyOn(ProgressContext, 'useProgressContext').mockImplementation(():any => {
+      return {
+        Next: mockNext
+      }
+    })
+
+    const wrapper = shallow(<SetApiKey />)
+    expect(wrapper.find(sel('button')).get(0).props.disabled).toBe(true)
+    
+  })
+
+  it('should next button disabled when error spaceId', () => {
+    const mockNext = jest.fn()
+    jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
+      return {
+        state: {
+          inputs: {
+            spaceId: ''
+          },
+          errors: {
+            spaceId: 'error'
           }
         }
       }

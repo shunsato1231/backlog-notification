@@ -139,7 +139,7 @@ describe('[ORGANISMS] SetUserList', ()=> {
     })
 
     const wrapper = mount(<SetUserList/>)
-    const inputs = wrapper.find(sel('input'))
+    const inputs = wrapper.find(sel('inputUser')).find('input')
     inputs.at(0).simulate('change', {target: {value: 'abc'}})
   
     expect(dispatchMock).toBeCalledWith({

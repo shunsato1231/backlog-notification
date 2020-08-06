@@ -9,7 +9,7 @@ import { SettingsFormProvider } from '../../../Hooks/SettingsForm/SettingsForm.c
 export const Introduction: React.FC = (): JSX.Element => {
   const initialProgressList: StepObjType[] = [
     {
-      name: 'API keyの入力',
+      name: 'API keyの登録',
       status: 'pending'
     },
     {
@@ -29,6 +29,7 @@ export const Introduction: React.FC = (): JSX.Element => {
       step={initialStep}
     >
     <SettingsFormProvider
+      spaceId={''}
       apiKey={''}
       userList={['']}
     >
