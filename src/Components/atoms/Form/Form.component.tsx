@@ -7,6 +7,7 @@ interface InputProps extends React.Props<{}> {
     placeholder?: string
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
     errorMessage?: string,
+    errorFlag?: boolean,
     value: string, 
 }
 
@@ -16,6 +17,7 @@ export const Input:React.FC<InputProps> = ({
     placeholder,
     onChange,
     errorMessage,
+    errorFlag,
     value,
 }): JSX.Element => {
   const [initial, setInitial] = useState<boolean>(true)
@@ -35,7 +37,7 @@ export const Input:React.FC<InputProps> = ({
         data-testid='input'
         className={`${styles[theme]} ${
           initial || errorMessage === undefined ? ''
-          : errorMessage ? styles.validateError
+          : errorMessage || errorFlag ? styles.validateError
           : styles.validateOk
           
         }`}

@@ -3,6 +3,7 @@ import * as webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 import WriteFilePlugin from 'write-file-webpack-plugin'
+import WebpackDevServer from "webpack-dev-server"
 import Dotenv from 'dotenv'
 
 const src  = path.resolve(__dirname, 'src')
@@ -68,6 +69,34 @@ const plugins: webpack.Plugin[] = [
   new WriteFilePlugin()
 ]
 
+const proxy: WebpackDevServer.ProxyConfigMap = {
+  '/firebase-api': {
+    target: 'https://fcm.googleapis.com/',
+    pathRewrite: { '^/firebase-api': '' },
+    secure: false,
+    changeOrigin: true
+  },
+  '/backlog-api': {
+    target: 'https://creative-m.backlog.com/',
+    pathRewrite: { '^/backlog-api': '' },
+    secure: false,
+    changeOrigin: true,
+    autoRewrite: true
+  },
+}
+
+const devServer: WebpackDevServer.Configuration = {
+  historyApiFallback: true,
+  contentBase: dist,
+  host: '0.0.0.0',
+  proxy: proxy,
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+    "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+  }
+}
+
 export const config: webpack.Configuration = {
   entry: entry,
   output: output,
@@ -78,5 +107,6 @@ export const config: webpack.Configuration = {
     extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
   plugins: plugins,
+  devServer: devServer,
   performance: { hints: false }
 }

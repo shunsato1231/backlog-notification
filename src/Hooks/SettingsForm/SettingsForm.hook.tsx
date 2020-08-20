@@ -45,16 +45,17 @@ interface State {
 }
 
 export const errorMessages = {
-  spaceId: 'スペースIDは半角英数・ハイフンからなる3〜10文字で入力してください',
-  apiKey: 'API Keyが入力されていません。',
+  spaceId: 'スペースIDは半角英数・ハイフンからなる3〜10文字で入力してください。',
+  apiKey: 'API Keyは64文字の英数字で入力してください。',
   userList: '通知をするユーザ名が入力されていません。'
 }
 
-const required = (value) => {
+const required = (value: string) => {
   return value === null || value === undefined || value === '' ? false : true
 }
 
 const spaceIdPattern = /^[0-9a-zA-Z-]{3,10}$/
+const apiKeyPattern = /^[0-9a-zA-Z]{64}$/
 
 const reducer = (state: State, action: Actions): State => {
   switch(action.type) {
@@ -73,7 +74,7 @@ const reducer = (state: State, action: Actions): State => {
         inputs: { ...state.inputs, ...action.payload },
         errors: {
           ...state.errors,
-          apiKey: required(action.payload.apiKey) ? null : errorMessages.apiKey
+          apiKey: apiKeyPattern.test(action.payload.apiKey) ? null : errorMessages.apiKey
         }
       }
     }

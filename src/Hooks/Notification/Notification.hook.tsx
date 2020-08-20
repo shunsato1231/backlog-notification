@@ -48,7 +48,7 @@ export const useNotification = (userId: string) => {
   }
 
   const createTokenGroup = async (token: string) => {
-    const url = process.env.REACT_APP_FIREBASE_API_URL_BASE + "/fcm/notification"
+    const url = "firebase-api/fcm/notification"
     const data = {
       "operation": "create",
       "notification_key_name": userId,
@@ -75,7 +75,7 @@ export const useNotification = (userId: string) => {
   }
 
   const getNotificationKey = async () => {
-    const url = process.env.REACT_APP_FIREBASE_API_URL_BASE + "/fcm/notification?notification_key_name=" + userId
+    const url = "firebase-api/fcm/notification?notification_key_name=" + userId
     const headers = {
       'Content-Type':'application/json',
       'Authorization': 'key=' + process.env.REACT_APP_FIREBASE_SERVER_KEY,
@@ -97,7 +97,7 @@ export const useNotification = (userId: string) => {
   }
 
   const addTokenGroup = async (token: string) => {
-    const url = process.env.REACT_APP_FIREBASE_API_URL_BASE + "/fcm/notification"
+    const url = "firebase-api/fcm/notification"
     const notificationKey = await getNotificationKey()
     const data = {
       "operation": "add",

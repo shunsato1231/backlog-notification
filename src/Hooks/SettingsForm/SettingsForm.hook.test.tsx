@@ -64,13 +64,14 @@ describe('[CUSTOM HOOK] useSettings', () => {
     expect(result.current.state.inputs.apiKey).toEqual('')
     expect(result.current.state.errors.apiKey).toEqual(errorMessages.apiKey)
 
+    const testApiKey = 'aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffgggg'
     act(() => result.current.dispatch({
       type: 'CHANGE_API_KEY',
       payload: {
-        apiKey: 'test apiKey'
+        apiKey: testApiKey
       }
     }))
-    expect(result.current.state.inputs.apiKey).toEqual('test apiKey')
+    expect(result.current.state.inputs.apiKey).toEqual(testApiKey)
     expect(result.current.state.errors.apiKey).toEqual(null)
   })
 
