@@ -1,0 +1,38 @@
+.help
+  position relative
+  display inline-block
+  font-size 0
+  width var(--size)
+  height var(--size)
+  &:before
+    transition 0.2s
+    position absolute
+    width var(--size)
+    height var(--size)
+    display block
+    content ''
+    top 0
+    right 0
+    bottom 0
+    left 0
+    margin auto
+    border-radius calc(var(--size) / 2)
+    background #42ce9f
+  &:after
+    position absolute
+    width var(--size)
+    height var(--size)
+    font-size calc(var(--size) / 1.5)
+    font-style normal
+    font-weight bold
+    display block
+    line-height var(--size)
+    text-align center
+    content '?'
+    top 0
+    left 0
+    color #fff
+  &:hover
+    &:before
+      background #41b289
+

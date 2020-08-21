@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { H2, H3 } from '../../atoms/Heading/Heading.component'
+import { H2 } from '../../atoms/Heading/Heading.component'
 import { Button } from '../../atoms/Button/Button.component'
 import { Input } from '../../atoms/Form/Form.component'
 
@@ -7,6 +7,7 @@ import styles from './SetApiKey.style.styl'
 import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
 import { useSettingsFormContext } from '../../../Hooks/SettingsForm/SettingsForm.context'
 import { useBacklogApi } from '../../../Hooks/BacklogApi/BacklogApi.hook'
+import { H3_Help } from '../../molecures/HelpHeading/HelpHeading.component'
 
 export const SetApiKey: React.FC = (): JSX.Element => {
   const progress = useProgressContext()
@@ -54,12 +55,13 @@ export const SetApiKey: React.FC = (): JSX.Element => {
 
   return (
     <div className={styles.wrapper}>
-      <H2
+      <H2 theme='initialSettings'>API Keyを登録</H2>
+      <H3_Help
         theme='initialSettings'
-      >API Keyを登録</H2>
-      <H3
-        theme='initialSettings'
-      >スペースID</H3>
+        helpLink='https://support-ja.backlog.com/hc/ja/articles/360036151593-%E3%82%B9%E3%83%9A%E3%83%BC%E3%82%B9ID%E3%81%A8%E3%81%AF-'
+      >
+        スペースID
+      </H3_Help>
       <div>
         <Input
           className={styles.input}
@@ -72,9 +74,12 @@ export const SetApiKey: React.FC = (): JSX.Element => {
           data-testid='inputSpaceId'
         />
       </div>
-      <H3 theme='initialSettings'>
+      <H3_Help
+        theme='initialSettings'
+        helpLink='https://support-ja.backlog.com/hc/ja/articles/360035641754-API%E3%81%AE%E8%A8%AD%E5%AE%9A'
+      >
         API Key
-      </H3>
+      </H3_Help>
       <Input
         className={styles.input}
         theme='initialSetting'
