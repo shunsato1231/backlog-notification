@@ -31,6 +31,7 @@ export const Introduction: React.FC = (): JSX.Element => {
     <SettingsFormProvider
       spaceId={''}
       apiKey={''}
+      spaceName={''}
       userList={['']}
     >
       <PageTemplate>

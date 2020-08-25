@@ -10,6 +10,7 @@ describe('[CUSTOM HOOK] useSettings', () => {
     ReactDOM.render(<SettingsFormProvider
       spaceId={''}
       apiKey={''}
+      spaceName={''}
       userList={['']}/>, div)
     ReactDOM.unmountComponentAtNode(div)
   })
@@ -17,12 +18,14 @@ describe('[CUSTOM HOOK] useSettings', () => {
   it('validate initial', () => {
     const { result } = renderHook(() => useSettingsForm())
 
+    expect(result.current.state.errors.spaceId).toEqual(errorMessages.spaceId)
     expect(result.current.state.errors.apiKey).toEqual(errorMessages.apiKey)
-    expect(result.current.state.errors.userList).toEqual(errorMessages.userList)
+    expect(result.current.state.errors.spaceName).toEqual('')
+    expect(result.current.state.errors.apiKey).toEqual(errorMessages.apiKey)
   })
 
   it('validate spaceId', () => {
-    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', userList: ['']}))
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', spaceName: '', userList: ['']}))
 
     act(() => result.current.dispatch({
       type: 'CHANGE_SPACE_ID',
@@ -53,7 +56,7 @@ describe('[CUSTOM HOOK] useSettings', () => {
   })
 
   it('validate apiKey', () => {
-    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', userList: ['']}))
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', spaceName: '',  userList: ['']}))
 
     act(() => result.current.dispatch({
       type: 'CHANGE_API_KEY',
@@ -75,8 +78,24 @@ describe('[CUSTOM HOOK] useSettings', () => {
     expect(result.current.state.errors.apiKey).toEqual(null)
   })
 
+  it('change spaceName and errorMessages', () => {
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', spaceName: '',  userList: ['']}))
+    const name = 'spaceName'
+    const error = 'error!!!'
+
+    act(() => result.current.dispatch({
+      type: 'CHANGE_SPACE_NAME',
+      payload: {
+        name: name,
+        error: error
+      }
+    }))
+    expect(result.current.state.inputs.spaceName).toEqual(name)
+    expect(result.current.state.errors.spaceName).toEqual(error)
+  })
+
   it('validate userList', () => {
-    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', userList: ['', '']}))
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', spaceName: '', userList: ['', '']}))
 
     act(() => result.current.dispatch({
       type: 'CHANGE_USER_LIST',
@@ -111,7 +130,7 @@ describe('[CUSTOM HOOK] useSettings', () => {
   })
 
   it('push userList', () => {
-    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', userList: ['']}))
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', spaceName: '',  userList: ['']}))
     expect(result.current.state.inputs.userList.length).toBe(1)
 
     act(() => result.current.dispatch({
@@ -121,7 +140,7 @@ describe('[CUSTOM HOOK] useSettings', () => {
   })
 
   it('pop userList', () => {
-    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', userList: ['', '', 'test user']}))
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', spaceName:'', userList: ['', '', 'test user']}))
     expect(result.current.state.inputs.userList.length).toBe(3)
 
     act(() => result.current.dispatch({

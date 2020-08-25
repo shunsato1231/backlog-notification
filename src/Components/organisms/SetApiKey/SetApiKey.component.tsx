@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { H2 } from '../../atoms/Heading/Heading.component'
 import { Button } from '../../atoms/Button/Button.component'
 import { Input } from '../../atoms/Form/Form.component'
@@ -13,12 +13,15 @@ export const SetApiKey: React.FC = (): JSX.Element => {
   const progress = useProgressContext()
   const settings = useSettingsFormContext()
 
-  const [spaceName, setSpaceName] = useState<string>(null)
-  const [isError, setIsError] = useState<string>(null)
-
   const updateSpaceID = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSpaceName(null)
-    setIsError(null)
+
+    settings.dispatch({
+      type: 'CHANGE_SPACE_NAME',
+      payload: {
+        name: null,
+        error: null
+      }
+    })
 
     settings.dispatch({
       type: 'CHANGE_SPACE_ID',
@@ -29,8 +32,13 @@ export const SetApiKey: React.FC = (): JSX.Element => {
   }, [])
 
   const updateApiKey = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSpaceName(null)
-    setIsError(null)
+    settings.dispatch({
+      type: 'CHANGE_SPACE_NAME',
+      payload: {
+        name: null,
+        error: null
+      }
+    })
 
     settings.dispatch({
       type: 'CHANGE_API_KEY',
@@ -44,12 +52,22 @@ export const SetApiKey: React.FC = (): JSX.Element => {
     useBacklogApi(settings.state.inputs.spaceId, settings.state.inputs.apiKey)
       .getSpace()
       .then(res => {
-        setSpaceName(res.data.name.trim())
-        setIsError(null)
+        settings.dispatch({
+          type: 'CHANGE_SPACE_NAME',
+          payload: {
+            name: res.data.name.trim(),
+            error: null
+          }
+        })
       })
       .catch(err => {
-        setSpaceName(null)
-        setIsError(err)
+        settings.dispatch({
+          type: 'CHANGE_SPACE_NAME',
+          payload: {
+            name: null,
+            error: err
+          }
+        })
       })
   }
 
@@ -69,7 +87,7 @@ export const SetApiKey: React.FC = (): JSX.Element => {
           placeholder='スペースIDを入力'
           value={settings.state.inputs.spaceId}
           errorMessage={settings.state.errors.spaceId}
-          errorFlag={isError ? true : false}
+          errorFlag={settings.state.errors.spaceName ? true : false}
           onChange={updateSpaceID}
           data-testid='inputSpaceId'
         />
@@ -86,15 +104,15 @@ export const SetApiKey: React.FC = (): JSX.Element => {
         placeholder='API Keyを入力'
         value={settings.state.inputs.apiKey}
         errorMessage={settings.state.errors.apiKey}
-        errorFlag={isError ? true : false}
+        errorFlag={settings.state.errors.spaceName ? true : false}
         onChange={updateApiKey}
         data-testid='inputApiKey'
       />
       {
-        spaceName
+        settings.state.inputs.spaceName
         ?
         <>
-          <p className={styles.spaceName}>スペース<span data-testid='space-name'>{spaceName}</span>の情報を登録します</p>
+          <p className={styles.spaceName}>スペース<span data-testid='spaceName'>{settings.state.inputs.spaceName}</span>の情報を登録します</p>
           <Button
             onClick={progress.Next}
             data-testid='nextButton'
@@ -102,9 +120,9 @@ export const SetApiKey: React.FC = (): JSX.Element => {
         </>
         :
         <>
-          <p className={styles.error} data-testid='isError'>{isError}</p>
+          <p className={styles.error} data-testid='spaceNameError'>{settings.state.errors.spaceName}</p>
           <Button
-            disabled={settings.state.errors.apiKey !== null || settings.state.errors.spaceId !== null || !!isError}
+            disabled={settings.state.errors.apiKey !== null || settings.state.errors.spaceId !== null || !!settings.state.errors.spaceName}
             onClick={getSpaceInfo}
             data-testid='settingsButton'
       >設定する</Button>

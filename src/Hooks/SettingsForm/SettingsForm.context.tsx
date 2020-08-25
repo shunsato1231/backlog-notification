@@ -8,11 +8,13 @@ const defaultSettingContext: SettingsContextType = {
     inputs: {
       spaceId: '',
       apiKey: '',
+      spaceName: '',
       userList: ['']
     },
     errors: {
       spaceId: null,
       apiKey: null,
+      spaceName: null,
       userList: null
     }
   },
@@ -25,16 +27,18 @@ export const useSettingsFormContext = (): SettingsContextType => useContext(Sett
 interface SettingsFormProviderProps extends React.Props<{}> {
   spaceId: '',
   apiKey: '',
+  spaceName: '',
   userList: ['']
 }
 
 export const SettingsFormProvider: React.FC<SettingsFormProviderProps> = ({
   spaceId,
   apiKey,
+  spaceName,
   userList,
   children
 }):JSX.Element => {
-  const {state, dispatch}  = useSettingsForm({spaceId, apiKey, userList})
+  const {state, dispatch}  = useSettingsForm({spaceId, apiKey, spaceName, userList})
 
   return (
     <SettingsFormContext.Provider value={{state, dispatch}}>

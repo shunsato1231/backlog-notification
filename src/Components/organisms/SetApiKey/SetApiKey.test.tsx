@@ -77,7 +77,7 @@ describe('[ORGANISMS] SetApiKey', ()=> {
     })
   })
 
-  it('should settings button disabled when  apiKey', () => {
+  it('should settings button disabled when apiKey empty', () => {
     jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
       return {
         state: {
@@ -96,7 +96,7 @@ describe('[ORGANISMS] SetApiKey', ()=> {
     
   })
 
-  it('should settings button disabled when  spaceId', () => {
+  it('should settings button disabled when spaceId empty', () => {
     jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
       return {
         state: {
@@ -114,19 +114,50 @@ describe('[ORGANISMS] SetApiKey', ()=> {
     expect(wrapper.find(sel('settingsButton')).get(0).props.disabled).toBe(true)
   })
 
-  it('should display space name when getSpace return correct', (done) => {
+  it('should show error message and settings button disabled when set apikey errors and spaceId errors', () => {
+    const apiKeyError = 'apiKey error!!'
+    const spaceIdError = 'spaceId error!!'
+    jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
+      return {
+        state: {
+          inputs: {
+            apiKey: '',
+            spaceId: '',
+            spaceName: ''
+          },
+          errors: {
+            apiKey: apiKeyError,
+            spaceId: spaceIdError,
+            spaceName: ''
+          }
+        }
+      }
+    })
+
+    const wrapper = shallow(<SetApiKey />)
+
+    expect(wrapper.find(sel('inputApiKey')).get(0).props.errorMessage).toBe(apiKeyError)
+    expect(wrapper.find(sel('inputSpaceId')).get(0).props.errorMessage).toBe(spaceIdError)
+    expect(wrapper.find(sel('settingsButton')).get(0).props.disabled).toBe(true)
+  })
+
+  it('should called dispatch when getSpace Api return correct', (done) => {
+    const dispatchMock = jest.fn();
     jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
       return {
         state: {
           inputs: {
             spaceId: 'test-1',
-            apiKey: 'test Key'
+            apiKey: 'test Key',
+            spaceName: ''
           },
           errors: {
             spaceId: '',
-            apiKey: ''
+            apiKey: '',
+            spaceName: ''
           }
-        }
+        },
+        dispatch: dispatchMock
       }
     })
     const spaceName = 'testSpace'
@@ -139,31 +170,74 @@ describe('[ORGANISMS] SetApiKey', ()=> {
 
     const wrapper = shallow(<SetApiKey />)
     wrapper.find(sel('settingsButton')).simulate('click')
-
+    
     setImmediate(() => {
       expect(mockGetSpace).toBeCalled()
-      const spaceNameElement = wrapper.find(sel('space-name'))
-      expect(spaceNameElement.text()).toBe(spaceName)
+      expect(dispatchMock).toBeCalledWith({
+        type: 'CHANGE_SPACE_NAME',
+        payload: {
+          name: spaceName,
+          error: null
+        }
+      })
       done()
     })
   })
 
-  it('should display  message when getSpace return ', (done) => {
+  it('should show spaceName and go next step when got space name', () => {
+    const spaceName = 'space Name!'
     jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
       return {
         state: {
           inputs: {
             spaceId: 'test-1',
-            apiKey: 'test Key'
+            apiKey: 'test Key',
+            spaceName: spaceName
           },
           errors: {
             spaceId: '',
-            apiKey: ''
+            apiKey: '',
+            spaceName: ''
           }
-        }
+        },
       }
     })
-    const errorMessage = '!!!'
+
+    const mockNext = jest.fn()
+    jest.spyOn(ProgressContext, 'useProgressContext').mockImplementation(():any => {
+      return {
+        Next: mockNext
+      }
+    })
+
+    const wrapper = shallow(<SetApiKey />)
+
+    expect(wrapper.find(sel('spaceName')).text()).toBe(spaceName)
+
+    wrapper.find(sel('nextButton')).simulate('click')
+      expect(mockNext).toBeCalled()
+  })
+
+  it('should called dispatch when getSpace Api return error', (done) => {
+    const dispatchMock = jest.fn();
+    jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
+      return {
+        state: {
+          inputs: {
+            spaceId: 'test-1',
+            apiKey: 'test Key',
+            spaceName: ''
+          },
+          errors: {
+            spaceId: '',
+            apiKey: '',
+            spaceName: ''
+          }
+        },
+        dispatch: dispatchMock
+      }
+    })
+    const errorMessage = 'error!!!'
     const mockGetSpace = jest.fn(() => Promise.reject(errorMessage))
     jest.spyOn(BacklogApi, 'useBacklogApi').mockImplementation(():any => {
       return {
@@ -176,17 +250,33 @@ describe('[ORGANISMS] SetApiKey', ()=> {
 
     setImmediate(() => {
       expect(mockGetSpace).toBeCalled()
-      const errorElement = wrapper.find(sel('isError'))
-      expect(errorElement.text()).toBe(errorMessage)
+      expect(dispatchMock).toBeCalledWith({
+        type: 'CHANGE_SPACE_NAME',
+        payload: {
+          name: null,
+          error: errorMessage
+        }
+      })
       done()
     })
   })
 
-  it('should go next step when got space name', (done) => {
-    const mockGetSpace = jest.fn(() => Promise.resolve({data: {name: 'spaceName'}}))
-    jest.spyOn(BacklogApi, 'useBacklogApi').mockImplementation(():any => {
+  it('should show Error message when error space name', () => {
+    const spaceNameError = 'space Name Error!'
+    jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
       return {
-        getSpace: mockGetSpace
+        state: {
+          inputs: {
+            spaceId: 'test-1',
+            apiKey: 'test Key',
+            spaceName: ''
+          },
+          errors: {
+            spaceId: '',
+            apiKey: '',
+            spaceName: spaceNameError
+          }
+        },
       }
     })
 
@@ -197,15 +287,12 @@ describe('[ORGANISMS] SetApiKey', ()=> {
       }
     })
 
-    jest.spyOn(React, 'useState').mockReturnValue(['testVal', jest.fn()])
-
     const wrapper = shallow(<SetApiKey />)
-    wrapper.find(sel('settingsButton')).simulate('click')
 
-    setImmediate(() => {
-      wrapper.find(sel('nextButton')).simulate('click')
-      expect(mockNext).toBeCalled()
-      done()
-    })
+    expect(wrapper.find(sel('spaceNameError')).text()).toBe(spaceNameError)
+
+    expect(wrapper.find(sel('settingsButton')).get(0).props.disabled).toBe(true)
+    expect(wrapper.find(sel('inputSpaceId')).get(0).props.errorFlag).toBe(true)
+    expect(wrapper.find(sel('inputApiKey')).get(0).props.errorFlag).toBe(true)
   })
 })
