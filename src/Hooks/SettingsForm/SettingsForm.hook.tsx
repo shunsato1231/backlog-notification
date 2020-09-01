@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useReducer } from "react"
+import { useLocalStorage } from '../LocalStorage/LocalStorage.hook'
 
 type Settings = {
   spaceId: string,
@@ -158,20 +159,56 @@ export interface SettingsContextType {
 
 
 export const useSettingsForm = (initialState?: Settings): SettingsContextType => {
-  const [state, dispatch] = useReducer(reducer, {
-      inputs: initialState || {
-        spaceId: '',
-        apiKey: '',
-        spaceName: '',
-        userList: []
-      },
-      errors: {
-        spaceId: errorMessages.spaceId,
-        apiKey: errorMessages.apiKey,
-        spaceName: '',
-        userList: errorMessages.userList
+  const stateType = {
+    inputs: initialState || {
+      spaceId: '',
+      apiKey: '',
+      spaceName: '',
+      userList: []
+    },
+    errors: {
+      spaceId: errorMessages.spaceId,
+      apiKey: errorMessages.apiKey,
+      spaceName: '',
+      userList: errorMessages.userList
+    }
+  }
+  const didMountRef = useRef(false)
+
+  const [_state, setState] = useLocalStorage<State>('settingsForm', stateType)
+  const [state, dispatch] = useReducer(reducer, stateType)
+
+  useEffect(() => {
+    dispatch({
+      type: 'CHANGE_SPACE_NAME',
+      payload: {
+        name: _state.inputs.spaceName,
+        error: _state.errors.spaceName
       }
-  })
+    })
+
+    dispatch({
+      type: 'CHANGE_SPACE_ID',
+      payload: {
+        spaceId: _state.inputs.spaceId
+      }
+    })
+
+    dispatch({
+      type: 'CHANGE_API_KEY',
+      payload: {
+        apiKey: _state.inputs.apiKey,
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    if(didMountRef.current) {
+      setState(state)
+    } else {
+      didMountRef.current = true
+    }
+  }, [state])
 
   return {state, dispatch}
 }
