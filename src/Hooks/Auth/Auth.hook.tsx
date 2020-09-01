@@ -22,14 +22,14 @@ export type userInfoType = {
 export const useAuth = (): AuthContextType => {
   const { auth, database } = useFirebase()
 
-  const [uid, setUid] = useLocalStorage('uid', null)
+  const [uid, setUid] = useLocalStorage<string>('uid', null)
 
   const initialInfo: userInfoType = {
     apiKey: '',
     userList: [''],
     notificationKey: ''
   }
-  const [info, setInfoState] = useLocalStorage('info', initialInfo)
+  const [info, setInfoState] = useLocalStorage<userInfoType>('info', initialInfo)
 
   useEffect(() => {
     const listener = auth.onAuthStateChanged(

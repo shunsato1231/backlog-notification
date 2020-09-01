@@ -5,7 +5,7 @@ import { useAuthContext } from '../../../Hooks/Auth/Auth.context'
 import { useToastContext } from '../../../Hooks/Toast/Toast.context'
 
 export const Dashboard: React.FC = (): JSX.Element => {
-  const uid = useLocalStorage('uid', null)[0]
+  const uid = useLocalStorage<string>('uid', null)[0]
   const toast = useToastContext()
   const {notificationKey, isError} = useNotification(uid)
 
