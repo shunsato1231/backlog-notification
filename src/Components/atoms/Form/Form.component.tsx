@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styles from './Form.style.styl'
 
 interface InputProps extends React.Props<{}> {
@@ -21,7 +21,7 @@ export const Input:React.FC<InputProps> = ({
     value,
 }): JSX.Element => {
   const [initial, setInitial] = useState<boolean>(true)
-  const didMountRef = React.useRef(false)
+  const didMountRef = useRef(false)
 
   useEffect(() => {
     if(didMountRef.current) {
@@ -36,7 +36,7 @@ export const Input:React.FC<InputProps> = ({
       <input
         data-testid='input'
         className={`${styles[theme]} ${
-          initial || errorMessage === undefined ? ''
+          initial && !value || errorMessage === undefined ? ''
           : errorMessage || errorFlag ? styles.validateError
           : styles.validateOk
           
@@ -49,7 +49,7 @@ export const Input:React.FC<InputProps> = ({
         <p
           data-testid='errorMessage'
           className={styles.errorMessage}
-        >{initial ? '' : errorMessage}</p>
+        >{initial && !value ? '' : errorMessage}</p>
       }
     </div>
   )
