@@ -1,7 +1,7 @@
 import { useState } from "react"
 
-export const useLocalStorage = (key: string, initialValue: any): [any, (value: any) => Promise<void>] => {
-  const [storedValue, setStoredValue] = useState(() => {
+export const useLocalStorage = <T extends any>(key: string, initialValue: T): [T, (value: T) => Promise<void>] => {
+  const [storedValue, setStoredValue] = useState<T>(() => {
     try {
       const item = window.localStorage.getItem(key)
       return item ? JSON.parse(item) : initialValue
@@ -10,7 +10,7 @@ export const useLocalStorage = (key: string, initialValue: any): [any, (value: a
     }
   })
 
-  const setValue = async (value: any) => {
+  const setValue = async (value: T) => {
     try {
       const valueToStore = value instanceof Function ? value(storedValue) : value
       setStoredValue(valueToStore)
