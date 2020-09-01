@@ -1,9 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Input } from './Form.component'
+import { ValidationForm } from './ValidationForm.component'
 import { shallow, mount } from 'enzyme'
-
-import styles from './Form.style.styl'
 
 const sel = (id: string) => {
   return `[data-testid="${id}"]`
@@ -13,7 +11,7 @@ describe('[ATOMS] Form', () => {
 
   it('Input renders without crashing', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<Input
+    ReactDOM.render(<ValidationForm
       value='test value'
       />, div)
     ReactDOM.unmountComponentAtNode(div)
@@ -21,7 +19,7 @@ describe('[ATOMS] Form', () => {
 
   it('Input renders without crashing with className', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<Input
+    ReactDOM.render(<ValidationForm
       value='test value'
       className='testClass'
     />, div)
@@ -30,7 +28,7 @@ describe('[ATOMS] Form', () => {
 
   it('should hidden error message and not set style when initial loading and errorMessage is string', () => {
     let errorMessage: string = 'error!'
-    const wrapper = shallow(<Input
+    const wrapper = shallow(<ValidationForm
       value=''
       errorMessage={errorMessage}
     />)
@@ -38,14 +36,13 @@ describe('[ATOMS] Form', () => {
     const input = wrapper.find(sel('input'))
     const text = wrapper.find(sel('errorMessage'))
 
-    expect(input.hasClass(styles.validateError)).toBe(false)
-    expect(input.hasClass(styles.validateOk)).toBe(false)
+    expect(input.prop('status')).toBe('normal')
     expect(text.text()).toEqual('')
   })
 
   it('should set error style when errorMessage is string and changed message', () => {
     let errorMessage: string = 'error!'
-    const wrapper = mount(<Input
+    const wrapper = mount(<ValidationForm
       theme='initialSetting'
       value=''
       errorMessage={errorMessage}
@@ -58,14 +55,13 @@ describe('[ATOMS] Form', () => {
     const input = wrapper.find(sel('input'))
     const text = wrapper.find(sel('errorMessage'))
 
-    expect(input.hasClass(styles.validateError)).toBe(true)
-    expect(input.hasClass(styles.validateOk)).toBe(false)
+    expect(input.prop('status')).toBe('error')
     expect(text.text()).toEqual(errorMessage)
   })
 
   it('should hidden error message and not set style when initial loading and errorMessage is null', () => {
     let errorMessage: string = null
-    const wrapper = shallow(<Input
+    const wrapper = shallow(<ValidationForm
       value=''
       errorMessage={errorMessage}
     />)
@@ -73,14 +69,13 @@ describe('[ATOMS] Form', () => {
     const input = wrapper.find(sel('input'))
     const text = wrapper.find(sel('errorMessage'))
 
-    expect(input.hasClass(styles.validateError)).toBe(false)
-    expect(input.hasClass(styles.validateOk)).toBe(false)
+    expect(input.prop('status')).toBe('normal')
     expect(text.text()).toEqual('')
   })
 
   it('should set error style when errorMessage is null and changed message', () => {
     let errorMessage: string = null
-    const wrapper = mount(<Input
+    const wrapper = mount(<ValidationForm
       value=''
       errorMessage={errorMessage}
     />)
@@ -92,14 +87,13 @@ describe('[ATOMS] Form', () => {
     const input = wrapper.find(sel('input'))
     const text = wrapper.find(sel('errorMessage'))
 
-    expect(input.hasClass(styles.validateError)).toBe(false)
-    expect(input.hasClass(styles.validateOk)).toBe(true)
+    expect(input.prop('status')).toBe('correct')
     expect(text.text()).toEqual('')
   })
 
 
   it('should hide errorStyle and error message when errorMessage props is undefined', () => {
-    const wrapper = mount(<Input
+    const wrapper = mount(<ValidationForm
       value=''
     />)
 
@@ -113,8 +107,7 @@ describe('[ATOMS] Form', () => {
     input.props().value = 'test'
     input.simulate('change')
 
-    expect(input.hasClass(styles.validateError)).toBe(false)
-    expect(input.hasClass(styles.validateOk)).toBe(false)
+    expect(input.prop('status')).toBe('normal')
     expect(text.length).toBe(0)
   })
 })

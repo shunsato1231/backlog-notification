@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react'
 import { H2 } from '../../atoms/Heading/Heading.component'
 import { Button } from '../../atoms/Button/Button.component'
-import { Input } from '../../atoms/Form/Form.component'
 
 import styles from './SetApiKey.style.styl'
 import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
 import { useSettingsFormContext } from '../../../Hooks/SettingsForm/SettingsForm.context'
 import { useBacklogApi } from '../../../Hooks/BacklogApi/BacklogApi.hook'
 import { H3_Help } from '../../molecures/HelpHeading/HelpHeading.component'
+import { ValidationForm } from '../../molecures/ValidationForm/ValidationForm.component'
 
 export const SetApiKey: React.FC = (): JSX.Element => {
   const progress = useProgressContext()
@@ -81,7 +81,7 @@ export const SetApiKey: React.FC = (): JSX.Element => {
         スペースID
       </H3_Help>
       <div>
-        <Input
+        <ValidationForm
           className={styles.input}
           theme='initialSetting'
           placeholder='スペースIDを入力'
@@ -98,7 +98,7 @@ export const SetApiKey: React.FC = (): JSX.Element => {
       >
         API Key
       </H3_Help>
-      <Input
+      <ValidationForm
         className={styles.input}
         theme='initialSetting'
         placeholder='API Keyを入力'

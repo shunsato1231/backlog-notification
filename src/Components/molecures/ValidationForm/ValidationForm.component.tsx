@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
-import styles from './Form.style.styl'
+import styles from './ValidationForm.style.styl'
+import { Input } from '../../atoms/Input/Input.component'
 
-interface InputProps extends React.Props<{}> {
+interface ValidationFormProps extends React.Props<{}> {
     className?: string,
     theme?: 'initialSetting',
     placeholder?: string
@@ -11,7 +12,7 @@ interface InputProps extends React.Props<{}> {
     value: string, 
 }
 
-export const Input:React.FC<InputProps> = ({
+export const ValidationForm:React.FC<ValidationFormProps> = ({
     className,
     theme,
     placeholder,
@@ -33,14 +34,13 @@ export const Input:React.FC<InputProps> = ({
 
   return (
     <div className={`${className || ''}`}>
-      <input
+      <Input
         data-testid='input'
-        className={`${styles[theme]} ${
-          initial && !value || errorMessage === undefined ? ''
-          : errorMessage || errorFlag ? styles.validateError
-          : styles.validateOk
-          
-        }`}
+        className={styles.input}
+        theme={theme}
+        status={initial && !value || errorMessage === undefined ? 'normal'
+        : errorMessage || errorFlag ? 'error'
+        : 'correct'}
         onChange={onChange}
         placeholder={placeholder}
         value={value}
