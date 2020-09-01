@@ -1,16 +1,41 @@
 import React from 'react'
-import { H3 } from '../../atoms/Heading/Heading.component'
+import { H2, H3 } from '../../atoms/Heading/Heading.component'
 import { Icon } from '../../atoms/Icon/Icon.component'
 const styles = require('./HelpHeading.style.styl')
 
-interface H3HelpProps extends React.Props<{}> {
+interface HelpProps extends React.Props<{}> {
   helpLink: string
   className?: string
   theme?: 'initialSettings',
   iconSize?: 'small' | 'middle' | 'large' | number
 }
 
-export const H3_Help: React.FC<H3HelpProps> = ({
+export const H2_Help: React.FC<HelpProps> = ({
+  helpLink,
+  className,
+  theme,
+  iconSize='middle',
+  children
+}): JSX.Element => (
+  <H2
+    theme={theme}
+    className={`${className} ${styles['help']}`}
+  >
+    {children}
+    <a
+      target='_blank'
+      href={helpLink}
+      className={styles[theme + 'Icon']}
+    >
+      <Icon
+        theme='help'
+        size={iconSize}
+      />
+    </a>
+  </H2>
+)
+
+export const H3_Help: React.FC<HelpProps> = ({
   helpLink,
   className,
   theme,
@@ -19,7 +44,7 @@ export const H3_Help: React.FC<H3HelpProps> = ({
 }): JSX.Element => (
   <H3
     theme={theme}
-    className={className}
+    className={`${className} ${styles['help']}`}
   >
     {children}
     <a
