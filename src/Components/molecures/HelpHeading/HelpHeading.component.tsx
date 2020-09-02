@@ -1,7 +1,7 @@
 import React from 'react'
 import { H2, H3 } from '../../atoms/Heading/Heading.component'
 import { Icon } from '../../atoms/Icon/Icon.component'
-const styles = require('./HelpHeading.style.styl')
+import styles from './HelpHeading.style.styl'
 
 interface HelpProps extends React.Props<{}> {
   helpLink: string
@@ -14,12 +14,12 @@ export const H2_Help: React.FC<HelpProps> = ({
   helpLink,
   className,
   theme,
-  iconSize='middle',
+  iconSize='small',
   children
 }): JSX.Element => (
   <H2
     theme={theme}
-    className={`${className} ${styles['help']}`}
+    className={`${className || ''} ${styles['help']}`}
   >
     {children}
     <a
@@ -39,12 +39,12 @@ export const H3_Help: React.FC<HelpProps> = ({
   helpLink,
   className,
   theme,
-  iconSize='middle',
+  iconSize='small',
   children
 }): JSX.Element => (
   <H3
     theme={theme}
-    className={`${className} ${styles['help']}`}
+    className={`${className || ''} ${styles['help']}`}
   >
     {children}
     <a
