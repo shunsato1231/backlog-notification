@@ -14,7 +14,7 @@ export const UserListItem: React.FC<UserListItemProps> = ({
   image
 }): JSX.Element => (
   <li className={`${className || ''} ${styles.userListItem}`}>
-    <ImgIcon 
+    <ImgIcon
       size = 'small'
       src = {image}
       className={styles.image}
