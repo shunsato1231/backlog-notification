@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react'
-import { H2 } from '../../atoms/Heading/Heading.component'
-import { Button } from '../../atoms/Button/Button.component'
+import { H2 } from '../../../../atoms/Heading/Heading.component'
+import { Button } from '../../../../atoms/Button/Button.component'
 
 import styles from './SetApiKey.style.styl'
-import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
-import { useSettingsFormContext } from '../../../Hooks/SettingsForm/SettingsForm.context'
-import { useBacklogApi } from '../../../Hooks/BacklogApi/BacklogApi.hook'
-import { H3_Help } from '../../molecures/HelpHeading/HelpHeading.component'
-import { ValidationForm } from '../../molecures/ValidationForm/ValidationForm.component'
+import { useProgressContext } from '../../../../../Hooks/Progress/Progress.context'
+import { useSettingsFormContext } from '../../../../../Hooks/SettingsForm/SettingsForm.context'
+import { useBacklogApi } from '../../../../../Hooks/BacklogApi/BacklogApi.hook'
+import { H3_Help } from '../../../../molecures/HelpHeading/HelpHeading.component'
+import { ValidationForm } from '../../../../molecures/ValidationForm/ValidationForm.component'
 
 export const SetApiKey: React.FC = (): JSX.Element => {
   const progress = useProgressContext()
@@ -55,7 +55,7 @@ export const SetApiKey: React.FC = (): JSX.Element => {
         settings.dispatch({
           type: 'CHANGE_SPACE_NAME',
           payload: {
-            name: res.data.name.trim(),
+            name: res.name.trim(),
             error: null
           }
         })

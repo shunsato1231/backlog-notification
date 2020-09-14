@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import * as SettingsFormContext from '../../../Hooks/SettingsForm/SettingsForm.context'
+import * as SettingsFormContext from '../../../../../Hooks/SettingsForm/SettingsForm.context'
 import { SetUserList } from './SetUserList.component'
 import { shallow, mount } from 'enzyme'
-import * as ProgressContext from '../../../Hooks/Progress/Progress.context'
+import * as ProgressContext from '../../../../../Hooks/Progress/Progress.context'
 
 const sel = (id: string) => {
   return `[data-testid="${id}"]`

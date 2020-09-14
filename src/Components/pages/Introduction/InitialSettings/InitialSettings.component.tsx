@@ -1,11 +1,11 @@
 import React from 'react'
-import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
-import { ProgressBar } from '../ProgressBar/ProgressBar.component'
-import { SliderWrapper } from '../../molecures/SliderWrapper/SliderWrapper.component'
 import styles from './InitialSettings.style.styl'
-import { SetApiKey } from '../SetApiKey/SetApiKey.component'
-import { SetUserList } from '../SetUserList/SetUserList.component'
-import { SettingsConfirm } from '../SettingsConfirm/SettingsConfirm.component'
+import { useProgressContext } from '../../../../Hooks/Progress/Progress.context'
+import { ProgressBar } from '../../../organisms/ProgressBar/ProgressBar.component'
+import { SliderWrapper } from '../../../molecures/SliderWrapper/SliderWrapper.component'
+import { SetApiKey } from './SetApiKey/SetApiKey.component'
+import { SetUserList } from './SetUserList/SetUserList.component'
+import { SettingsConfirm } from './SettingsConfirm/SettingsConfirm.component'
 
 export const InitialSettings: React.FC = (): JSX.Element => {
 

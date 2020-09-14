@@ -1,10 +1,10 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
 import { SetApiKey } from './SetApiKey.component'
-import * as SettingsFormContext from '../../../Hooks/SettingsForm/SettingsForm.context'
+import * as SettingsFormContext from '../../../../../Hooks/SettingsForm/SettingsForm.context'
 import { mount, shallow } from 'enzyme'
-import * as ProgressContext from '../../../Hooks/Progress/Progress.context'
-import * as BacklogApi from '../../../Hooks/BacklogApi/BacklogApi.hook'
+import * as ProgressContext from '../../../../../Hooks/Progress/Progress.context'
+import * as BacklogApi from '../../../../../Hooks/BacklogApi/BacklogApi.hook'
 
 const sel = (id: string) => {
   return `[data-testid="${id}"]`

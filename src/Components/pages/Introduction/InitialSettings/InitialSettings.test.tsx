@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { InitialSettings } from './InitialSettings.component'
-import * as ProgressContext from '../../../Hooks/Progress/Progress.context'
+import * as ProgressContext from '../../../../Hooks/Progress/Progress.context'
 import { shallow } from 'enzyme'
 
 const sel = (id: string) => {

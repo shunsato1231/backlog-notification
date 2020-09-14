@@ -1,9 +1,9 @@
 import React from 'react'
 import {StepObjType, StepNumType } from '../../../Hooks/Progress/Progress.hook'
 import { PageTemplate } from '../../templates/PageTemplate/PageTemplate.component'
-import { StartView } from '../../organisms/StartView/StartView.component'
+import { StartView } from './StartView/StartView.component'
 import { ProgressProvider } from '../../../Hooks/Progress/Progress.context'
-import { InitialSettings } from '../../organisms/InitialSettings/InitialSettings.component'
+import { InitialSettings } from './InitialSettings/InitialSettings.component'
 import { SettingsFormProvider } from '../../../Hooks/SettingsForm/SettingsForm.context'
 
 export const Introduction: React.FC = (): JSX.Element => {

@@ -2,11 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router } from 'react-router-dom';
 import { SettingsConfirm, } from './SettingsConfirm.component'
-import * as SettingsFormContext from '../../../Hooks/SettingsForm/SettingsForm.context'
+import * as SettingsFormContext from '../../../../../Hooks/SettingsForm/SettingsForm.context'
 import { mount } from 'enzyme'
-import * as ProgressContext from '../../../Hooks/Progress/Progress.context'
-import * as ToastContext from '../../../Hooks/Toast/Toast.context'
-import { errorMessages } from '../../../Hooks/SettingsForm/SettingsForm.hook'
+import * as ProgressContext from '../../../../../Hooks/Progress/Progress.context'
+import * as ToastContext from '../../../../../Hooks/Toast/Toast.context'
+import { errorMessages } from '../../../../../Hooks/SettingsForm/SettingsForm.hook'
 import { act } from '@testing-library/react-hooks';
 
 const sel = (id: string) => {

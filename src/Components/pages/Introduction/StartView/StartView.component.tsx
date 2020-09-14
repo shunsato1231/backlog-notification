@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './StartView.style.styl'
-import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
-import { useAuthContext } from '../../../Hooks/Auth/Auth.context'
+import { useProgressContext } from '../../../../Hooks/Progress/Progress.context'
+import { useAuthContext } from '../../../../Hooks/Auth/Auth.context'
 
 export const StartView:React.FC = (): JSX.Element => {
   const progress = useProgressContext()

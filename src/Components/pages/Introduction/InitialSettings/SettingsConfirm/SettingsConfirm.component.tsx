@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useSettingsFormContext } from '../../../Hooks/SettingsForm/SettingsForm.context'
-import { Button } from '../../atoms/Button/Button.component'
-import { useProgressContext } from '../../../Hooks/Progress/Progress.context'
-import { H2, H3 } from '../../atoms/Heading/Heading.component'
+import { useSettingsFormContext } from '../../../../../Hooks/SettingsForm/SettingsForm.context'
+import { Button } from '../../../../atoms/Button/Button.component'
+import { useProgressContext } from '../../../../../Hooks/Progress/Progress.context'
+import { H2, H3 } from '../../../../atoms/Heading/Heading.component'
 import styles from './SettingsConfirm.style.styl'
-import { useToastContext } from '../../../Hooks/Toast/Toast.context'
-import { useAuthContext } from '../../../Hooks/Auth/Auth.context'
+import { useToastContext } from '../../../../../Hooks/Toast/Toast.context'
+import { useAuthContext } from '../../../../../Hooks/Auth/Auth.context'
 
 export const SettingsConfirm: React.FC = () => {
   const settings = useSettingsFormContext()
