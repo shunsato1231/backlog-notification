@@ -54,7 +54,8 @@ describe('[CUSTOM HOOK] useBacklogApi', () => {
       "name": 'test1', 
       "roleType": 1, 
       "lang": 'en', 
-      "mailAddress": 'test@test.com' 
+      "mailAddress": 'test@test.com',
+      "nulabAccount": null
     }
   let mockUser2: User = {
     "id": 2, 
@@ -62,7 +63,8 @@ describe('[CUSTOM HOOK] useBacklogApi', () => {
     "name": 'test2', 
     "roleType": 2,
     "lang": 'en', 
-    "mailAddress": 'test@test.com' 
+    "mailAddress": 'test@test.com',
+    "nulabAccount": null
   }
   let mockUser3: User = {
     "id": 3, 
@@ -70,7 +72,8 @@ describe('[CUSTOM HOOK] useBacklogApi', () => {
     "name": 'test3', 
     "roleType": 3,
     "lang": 'en', 
-    "mailAddress": 'test@test.com' 
+    "mailAddress": 'test@test.com',
+    "nulabAccount": null
   }
 
   let mockGetUserIconFlag: boolean

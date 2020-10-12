@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import styles from './SetUserList.style.styl'
 import { useSettingsFormContext } from '../../../../../Hooks/SettingsForm/SettingsForm.context'
 import { Button } from '../../../../atoms/Button/Button.component'
@@ -6,14 +6,13 @@ import { useProgressContext } from '../../../../../Hooks/Progress/Progress.conte
 import { useBacklogApi } from '../../../../../Hooks/BacklogApi/BacklogApi.hook'
 import { useToastContext } from '../../../../../Hooks/Toast/Toast.context'
 import { H2 } from '../../../../atoms/Heading/Heading.component'
-import { Input } from '../../../../atoms/Input/Input.component'
-import { UserListItem } from '../../../../molecures/UserListItem/UserListItem.component'
+import { UserSelect, ImageUser } from '../../../../organisms/UserSelect/UserSelect.component'
 
 export const SetUserList: React.FC = () => {
   const progress = useProgressContext()
   const settings = useSettingsFormContext()
   const toast = useToastContext()
-  let allUsers
+  const [allUsers, setAllUsers] = useState<ImageUser[]>()
 
   useEffect(() => {
     if(progress.currentStep === 2) {
@@ -21,8 +20,12 @@ export const SetUserList: React.FC = () => {
         useBacklogApi(settings.state.inputs.spaceId, settings.state.inputs.apiKey)
           .getUsers()
           .then(res => {
-            allUsers = res
-            console.log(allUsers)
+            setAllUsers(res.map(val => {
+              return {
+                ...val,
+                iconImage: ''
+              }
+            }))
           })
       } else {
         toast.dispatch({type: 'PUSH_NOTIFICATION', payload: {message: 'API Keyの登録が完了していません'}})
@@ -33,11 +36,31 @@ export const SetUserList: React.FC = () => {
     }
   }, [progress.currentStep])
 
-  const updateUserList = useCallback((event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  const getUserIcon = async (item: ImageUser) => {
+    let newAllUsers = allUsers.concat()
+    const index = newAllUsers.findIndex(({id}) => id === item.id)
+    if(item.iconImage) {
+      return item.iconImage
+    } else if (item.nulabAccount) {
+      return `https://${settings.state.inputs.spaceId}.backlog.jp/NulabAccountIcon.action?userId=${item.id}&amp;name=large`
+    } else {
+      const img = await useBacklogApi(settings.state.inputs.spaceId, settings.state.inputs.apiKey)
+        .getUserIcon(item.id)
+
+      newAllUsers[index] = {
+        ...newAllUsers[index],
+        iconImage: img
+      }
+      setAllUsers(newAllUsers)
+      return img
+    }
+  }
+
+  const updateUserList = useCallback((item: ImageUser, index: number) => {
     settings.dispatch({
       type: 'CHANGE_USER_LIST',
       payload: {
-        userName: event.target.value,
+        user: item,
         index: index
       }
     })
@@ -51,17 +74,16 @@ export const SetUserList: React.FC = () => {
       <div className={styles.inputList}>
         {settings.state.inputs.userList.map((item, index) => 
           <div className={styles.inputWrapper} key={index}>
-            <Input
-              data-testid='inputUser'
-              className={styles.input}
-              theme='initialSetting'
-              value = {item}
-              onChange = {(event: React.ChangeEvent<HTMLInputElement>) => updateUserList(event, index)}
-            />
-            <UserListItem
-              name='moge'
-              image={null}
-            />
+            { allUsers
+              ? <UserSelect
+                  width='100%'
+                  value={item}
+                  userList={allUsers}
+                  onChange={(item) => updateUserList(item, index)}
+                  onAppear={(id) => getUserIcon(id)}
+                />
+              : ''
+            }
             {settings.state.inputs.userList.length > 1 && <Button
               data-testid='delete'
               theme='delete'
@@ -92,7 +114,13 @@ export const SetUserList: React.FC = () => {
         data-testid='next'
         className={styles.next}
         disabled={settings.state.errors.userList !== null}
-        onClick={progress.Next}
+        onClick={() => {
+            settings.dispatch({
+              type: 'DELETE_EMPTY_USER_LIST'
+            })
+            progress.Next()
+          }
+        }
       >
         次へ
       </Button>

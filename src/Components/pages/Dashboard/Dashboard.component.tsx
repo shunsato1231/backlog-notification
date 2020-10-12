@@ -17,6 +17,7 @@ export const Dashboard: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     if(notificationKey) {
+      console.log(notificationKey)
       auth.setNotificationKey(notificationKey)
     }
   }, [notificationKey])

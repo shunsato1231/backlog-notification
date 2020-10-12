@@ -7,7 +7,7 @@ const defaultAuthContext: AuthContextType = {
   uid: '',
   info: {
     apiKey: '',
-    userList: [''],
+    userList: [null],
     notificationKey: ''
   },
   setApiKey: async () => {},

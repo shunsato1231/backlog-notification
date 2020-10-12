@@ -1,0 +1,60 @@
+.arrow
+  position relative
+  &:after
+    content ''
+    display block
+    width 0
+    height 0
+    border-width 8px 6px 8px 6px
+    border-style solid
+    border-color #e7e7e7 transparent transparent transparent
+    position absolute
+    right 10px
+    top 50%
+    transform translateY(-4px)
+.unselect
+  width var(--width)
+  height 38px
+  line-height 38px
+  background #fdfdfd
+  padding 0 10px
+  font-size 12px
+.selected
+  width var(--width)
+  height 38px
+  padding 0 10px
+.selecterWrapper
+  position absolute
+  top var(--top)
+  left var(--left)
+  width var(--width)
+  z-index 1000
+  overflow hidden
+  max-hegiht 0
+  &.open
+    max-hegiht 190px
+    transition max-height 1s
+  &.close
+    max-height 0
+    transition max-height 0.7s
+  .searchBox
+    width 100%
+    height 38px
+    padding 0 10px 10px
+    background #fdfdfd
+    .searchInput
+      height 28px
+  .userList
+    max-height 152px
+    overflow scroll
+    position relative
+    padding 10px
+    background #fdfdfd
+    &:first-child
+      margin-top 38px
+    .userListItem
+      padding 5px
+      border-radius 3px
+      &:hover
+        background#E8F1EC
+        cursor pointer

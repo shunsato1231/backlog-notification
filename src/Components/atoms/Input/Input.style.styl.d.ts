@@ -2,9 +2,12 @@
 // Please do not change this file!
 interface CssExports {
   'correct': string;
+  'default': string;
   'error': string;
-  'initialSetting': string;
   'normal': string;
+  'search': string;
+  'searchIcon': string;
+  'wrapper': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

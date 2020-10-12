@@ -83,7 +83,7 @@ export const SetApiKey: React.FC = (): JSX.Element => {
       <div>
         <ValidationForm
           className={styles.input}
-          theme='initialSetting'
+          theme='default'
           placeholder='スペースIDを入力'
           value={settings.state.inputs.spaceId}
           errorMessage={settings.state.errors.spaceId}
@@ -100,7 +100,7 @@ export const SetApiKey: React.FC = (): JSX.Element => {
       </H3_Help>
       <ValidationForm
         className={styles.input}
-        theme='initialSetting'
+        theme='default'
         placeholder='API Keyを入力'
         value={settings.state.inputs.apiKey}
         errorMessage={settings.state.errors.apiKey}

@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from 'react'
 import { useReducer } from "react"
+import { ImageUser } from '../../Components/organisms/UserSelect/UserSelect.component'
 import { useLocalStorage } from '../LocalStorage/LocalStorage.hook'
 
 type Settings = {
   spaceId: string,
   apiKey: string,
   spaceName: string,
-  userList: string[]
+  userList: ImageUser[]
 }
 
 interface Action<type, payload = {}, errors = {}> {
@@ -29,21 +30,22 @@ type changeSpaceName = Action<'CHANGE_SPACE_NAME' , {
 }>
 
 type changeUserList = Action<'CHANGE_USER_LIST', {
-  userName: string,
+  user: ImageUser,
   index: number
 }>
 
 type pushUserList = Action<'PUSH_USER_LIST'>
 type popUserList = Action<'POP_USER_LIST', {index: number}>
+type deleteEmptyUserList = Action<'DELETE_EMPTY_USER_LIST'>
 
-type Actions = changeSpaceId | changeApiKey | changeSpaceName | changeUserList | pushUserList | popUserList
+type Actions = changeSpaceId | changeApiKey | changeSpaceName | changeUserList | pushUserList | popUserList | deleteEmptyUserList
 
 interface State {
   inputs: {
     spaceId: string,
     apiKey: string,
     spaceName: string,
-    userList: string[]
+    userList: ImageUser[]
   },
   errors: {
     spaceId: string,
@@ -103,23 +105,23 @@ const reducer = (state: State, action: Actions): State => {
 
     case 'CHANGE_USER_LIST': {
       let newUserList = state.inputs.userList
-      newUserList[action.payload.index] = action.payload.userName
+      newUserList[action.payload.index] = action.payload.user
 
-      let UserListFirst = newUserList.length === 1 ? newUserList[0]
-        : newUserList.filter(Boolean)[0]
+      let UserListFirstName = newUserList.length === 1 ? newUserList[0].name
+        : newUserList.filter(Boolean)[0].name
 
       return {
         inputs: { ...state.inputs, userList: newUserList},
         errors: {
           ...state.errors,
-          userList: required(UserListFirst) ? null : errorMessages.userList
+          userList: required(UserListFirstName) ? null : errorMessages.userList
         }
       }
     }
 
     case 'PUSH_USER_LIST': {
       let pushedUserlist = state.inputs.userList
-      pushedUserlist.push('')
+      pushedUserlist.push(null)
       return {
         inputs: {
           ...state.inputs,
@@ -145,7 +147,22 @@ const reducer = (state: State, action: Actions): State => {
         },
         errors: {
           ...state.errors,
-          userList: required(checkPopedUserList) ? null : errorMessages.userList
+          userList: checkPopedUserList ? null : errorMessages.userList
+        }
+      }
+    }
+
+    case 'DELETE_EMPTY_USER_LIST': {
+      console.log(state.inputs.userList)
+      let newUserList = state.inputs.userList.filter(item => item !== null)
+
+      return  {
+        inputs: {
+          ...state.inputs,
+          userList: newUserList
+        },
+        errors: {
+          ...state.errors
         }
       }
     }

@@ -40,7 +40,7 @@ describe('[CUSTOM HOOK] useAuth', () => {
 
   it('set userList', () => {
     const { result } = renderHook(() => useAuth())
-    const userList = ['user1', 'user2']
+    const userList = [null]
     firestoreMock.mockSetReturn = { id: 'test-id' }
 
     act(() => {result.current.setUserList(userList)})

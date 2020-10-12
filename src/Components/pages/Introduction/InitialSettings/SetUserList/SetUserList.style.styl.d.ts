@@ -5,7 +5,6 @@ interface CssExports {
   'back': string;
   'deleteButton': string;
   'dummyInput': string;
-  'input': string;
   'inputList': string;
   'inputWrapper': string;
   'next': string;

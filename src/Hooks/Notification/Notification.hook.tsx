@@ -16,13 +16,11 @@ export const useNotification = (userId: string) => {
   const [isError, setIsError] = useState<string>(null)
 
   const permittionNotification = async () => {
-    await messaging.requestPermission().catch((error) => {
-      console.error(error)
+    await messaging.requestPermission().catch(() => {
       throw errorMessages.permission
     })
 
-    const token = await messaging.getToken().catch((error) => {
-      console.error(error)
+    const token = await messaging.getToken().catch(() => {
       throw errorMessages.token
     })
 
@@ -69,7 +67,6 @@ export const useNotification = (userId: string) => {
       })
       return res.data["notification_key"]
     } catch (error) {
-      console.error(error)
       throw errorMessages.createTokenGroup
     }
   }

@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import { useEffect } from 'react'
+import { ImageUser } from '../../Components/organisms/UserSelect/UserSelect.component'
 import { useFirebase } from '../Firebase/Firebase.hook'
 import { useLocalStorage } from '../LocalStorage/LocalStorage.hook'
 
@@ -7,7 +8,7 @@ export interface AuthContextType {
   uid: string,
   info: userInfoType,
   setApiKey: (apiKey: string) => Promise<void>,
-  setUserList: (userList: string[]) => Promise<void>,
+  setUserList: (userList: ImageUser[]) => Promise<void>,
   setNotificationKey: (notificationKey: string) => Promise<void>,
   signin: () => void,
   signout: () => void
@@ -15,7 +16,7 @@ export interface AuthContextType {
 
 export type userInfoType = {
   apiKey: string,
-  userList: string[],
+  userList: ImageUser[],
   notificationKey: string
 }
 
@@ -26,7 +27,7 @@ export const useAuth = (): AuthContextType => {
 
   const initialInfo: userInfoType = {
     apiKey: '',
-    userList: [''],
+    userList: [null],
     notificationKey: ''
   }
   const [info, setInfoState] = useLocalStorage<userInfoType>('info', initialInfo)
@@ -104,7 +105,7 @@ export const useAuth = (): AuthContextType => {
     await setInfo()
   }
 
-  const setUserList = async (userList: string[]) => {
+  const setUserList = async (userList: ImageUser[]) => {
     let newInfo = info
     newInfo.userList = userList
 

@@ -32,7 +32,7 @@ export const Introduction: React.FC = (): JSX.Element => {
       spaceId={''}
       apiKey={''}
       spaceName={''}
-      userList={['']}
+      userList={[null]}
     >
       <PageTemplate>
         <StartView></StartView>

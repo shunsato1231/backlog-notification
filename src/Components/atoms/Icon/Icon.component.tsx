@@ -6,7 +6,7 @@ const styles = require('./Icon.style.styl')
 interface IconProps extends React.Props<{}> {
   size?: number | 'small' | 'middle' | 'large'
   className?: string,
-  theme: 'help' | 'search'
+  theme: 'help' | 'search' | 'loading'
 }
 
 export const Icon: React.FC<IconProps> = ({

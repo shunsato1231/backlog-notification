@@ -7,6 +7,7 @@ import { H2, H3 } from '../../../../atoms/Heading/Heading.component'
 import styles from './SettingsConfirm.style.styl'
 import { useToastContext } from '../../../../../Hooks/Toast/Toast.context'
 import { useAuthContext } from '../../../../../Hooks/Auth/Auth.context'
+import { UserListItem } from '../../../../molecures/UserListItem/UserListItem.component'
 
 export const SettingsConfirm: React.FC = () => {
   const settings = useSettingsFormContext()
@@ -49,6 +50,10 @@ export const SettingsConfirm: React.FC = () => {
   return (
     <div className={styles.wrapper}>
     <H2 theme='initialSettings'>設定内容を確認</H2>
+    <H3 theme='initialSettings'>スペースID</H3>
+      <ul className={styles.list}>
+        <li>{settings.state.inputs.spaceId}</li>
+      </ul>
     <H3 theme='initialSettings'>API Key</H3>
       <ul className={styles.list}>
         <li>{settings.state.inputs.apiKey}</li>
@@ -56,7 +61,7 @@ export const SettingsConfirm: React.FC = () => {
     <H3 theme='initialSettings'>通知するユーザ</H3>
       <ul className={styles.list}>
         {settings.state.inputs.userList.map((item, index) =>
-          <li key={index}>{item}</li>
+          <UserListItem name={item?.name} image={item?.iconImage}  key={index}></UserListItem>
         )}
       </ul>
     <Button

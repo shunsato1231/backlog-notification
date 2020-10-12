@@ -3,6 +3,7 @@
 interface CssExports {
   'help': string;
   'img': string;
+  'loading': string;
   'search': string;
 }
 export const cssExports: CssExports;

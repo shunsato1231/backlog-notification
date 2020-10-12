@@ -59,7 +59,7 @@ export const useBacklogApi = (spaceId: string, userApiKey: string): backlogApiCo
 
       return prefix + base64
     } catch (err){
-      return null
+      throw err
     }
   }
 

@@ -4,7 +4,7 @@ import { Input } from '../../atoms/Input/Input.component'
 
 interface ValidationFormProps extends React.Props<{}> {
     className?: string,
-    theme?: 'initialSetting',
+    theme?: 'default',
     placeholder?: string
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
     errorMessage?: string,

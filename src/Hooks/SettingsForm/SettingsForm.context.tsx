@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSettingsForm, SettingsContextType } from './SettingsForm.hook'
 import { createContext, useContext } from 'react'
+import { ImageUser } from '../../Components/organisms/UserSelect/UserSelect.component'
 
 /* istanbul ignore next */
 const defaultSettingContext: SettingsContextType = {
@@ -9,7 +10,7 @@ const defaultSettingContext: SettingsContextType = {
       spaceId: '',
       apiKey: '',
       spaceName: '',
-      userList: ['']
+      userList: [null]
     },
     errors: {
       spaceId: null,
@@ -25,10 +26,10 @@ const SettingsFormContext: React.Context<SettingsContextType> = createContext<Se
 export const useSettingsFormContext = (): SettingsContextType => useContext(SettingsFormContext)
 
 interface SettingsFormProviderProps extends React.Props<{}> {
-  spaceId: '',
-  apiKey: '',
-  spaceName: '',
-  userList: ['']
+  spaceId: string,
+  apiKey: string,
+  spaceName: string,
+  userList: ImageUser[]
 }
 
 export const SettingsFormProvider: React.FC<SettingsFormProviderProps> = ({

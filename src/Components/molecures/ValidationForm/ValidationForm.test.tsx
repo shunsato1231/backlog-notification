@@ -43,7 +43,6 @@ describe('[ATOMS] Form', () => {
   it('should set error style when errorMessage is string and changed message', () => {
     let errorMessage: string = 'error!'
     const wrapper = mount(<ValidationForm
-      theme='initialSetting'
       value=''
       errorMessage={errorMessage}
     />)

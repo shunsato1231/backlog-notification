@@ -36,5 +36,6 @@ export interface User {
   "name": string, 
   "roleType": number, 
   "lang": string, 
-  "mailAddress": string 
+  "mailAddress": string ,
+  "nulabAccount": any
 }
