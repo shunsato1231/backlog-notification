@@ -6,10 +6,12 @@ import { createContext, useContext } from 'react'
 const defaultAuthContext: AuthContextType = {
   uid: '',
   info: {
+    spaceId: '',
     apiKey: '',
     userList: [null],
     notificationKey: ''
   },
+  setSpaceId: async () => {},
   setApiKey: async () => {},
   setUserList: async () => {},
   setNotificationKey: async () => {},

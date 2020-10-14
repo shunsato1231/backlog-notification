@@ -7,6 +7,7 @@ import { useLocalStorage } from '../LocalStorage/LocalStorage.hook'
 export interface AuthContextType {
   uid: string,
   info: userInfoType,
+  setSpaceId: (spaceId: string) => Promise<void>,
   setApiKey: (apiKey: string) => Promise<void>,
   setUserList: (userList: ImageUser[]) => Promise<void>,
   setNotificationKey: (notificationKey: string) => Promise<void>,
@@ -15,6 +16,7 @@ export interface AuthContextType {
 }
 
 export type userInfoType = {
+  spaceId: string,
   apiKey: string,
   userList: ImageUser[],
   notificationKey: string
@@ -26,6 +28,7 @@ export const useAuth = (): AuthContextType => {
   const [uid, setUid] = useLocalStorage<string>('uid', null)
 
   const initialInfo: userInfoType = {
+    spaceId: '',
     apiKey: '',
     userList: [null],
     notificationKey: ''
@@ -97,6 +100,14 @@ export const useAuth = (): AuthContextType => {
       await setInfoState(data)
   }
 
+  const setSpaceId = async (spaceId: string) => {
+    let newInfo = info
+    newInfo.spaceId = spaceId
+
+    await setInfoState(newInfo)
+    await setInfo()
+  }
+
   const setApiKey = async (apiKey: string) => {
     let newInfo = info
     newInfo.apiKey = apiKey
@@ -124,6 +135,7 @@ export const useAuth = (): AuthContextType => {
   return {
     uid,
     info,
+    setSpaceId,
     setApiKey,
     setUserList,
     setNotificationKey,

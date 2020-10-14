@@ -41,6 +41,7 @@ export const SettingsConfirm: React.FC = () => {
   const done = async () => {
     if(!settings.state.errors.apiKey && !settings.state.errors.userList) {
       progress.Next()
+      await auth.setSpaceId(settings.state.inputs.spaceId)
       await auth.setApiKey(settings.state.inputs.apiKey)
       await auth.setUserList(settings.state.inputs.userList)
       setTimeout(() => {history.push('/')}, 100)
