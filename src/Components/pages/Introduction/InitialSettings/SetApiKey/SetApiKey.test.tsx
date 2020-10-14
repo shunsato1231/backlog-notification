@@ -10,7 +10,7 @@ const sel = (id: string) => {
   return `[data-testid="${id}"]`
 }
 
-describe('[ORGANISMS] SetApiKey', ()=> {
+describe('[PAGES] SetApiKey', ()=> {
   afterEach(() => {
     jest.clearAllMocks()
   })
@@ -161,7 +161,7 @@ describe('[ORGANISMS] SetApiKey', ()=> {
       }
     })
     const spaceName = 'testSpace'
-    const mockGetSpace = jest.fn(() => Promise.resolve({data: {name: spaceName}}))
+    const mockGetSpace = jest.fn(() => Promise.resolve({name: spaceName}))
     jest.spyOn(BacklogApi, 'useBacklogApi').mockImplementation(():any => {
       return {
         getSpace: mockGetSpace
