@@ -125,7 +125,7 @@ describe('[CUSTOM HOOK] useBacklogApi', () => {
                 },
                 data: mockIconData
               })
-              : Promise.reject()
+              : Promise.reject('error')
         }
       })
   })
@@ -224,8 +224,8 @@ describe('[CUSTOM HOOK] useBacklogApi', () => {
 
     const {result} = renderHook(() => useBacklogApi('id', 'apiKey'))
     result.current.getUserIcon(123)
-      .catch(res => {
-        expect(res).toEqual(null)
+      .catch(err => {
+        expect(err).toEqual('error')
       })
   })
 })
