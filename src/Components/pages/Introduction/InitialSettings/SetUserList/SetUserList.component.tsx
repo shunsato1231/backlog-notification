@@ -76,6 +76,7 @@ export const SetUserList: React.FC = () => {
           <div className={styles.inputWrapper} key={index}>
             { allUsers
               ? <UserSelect
+                  data-testid="select"
                   width='100%'
                   value={item}
                   userList={allUsers}

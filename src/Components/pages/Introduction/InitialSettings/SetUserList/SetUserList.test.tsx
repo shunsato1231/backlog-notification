@@ -4,12 +4,49 @@ import * as SettingsFormContext from '../../../../../Hooks/SettingsForm/Settings
 import { SetUserList } from './SetUserList.component'
 import { shallow, mount } from 'enzyme'
 import * as ProgressContext from '../../../../../Hooks/Progress/Progress.context'
+import * as BacklogApi from '../../../../../Hooks/BacklogApi/BacklogApi.hook'
+import * as ToastContext from '../../../../../Hooks/Toast/Toast.context'
+import { act } from '@testing-library/react-hooks'
+import { User } from '../../../../../Hooks/BacklogApi/backlogApiTypes'
 
 const sel = (id: string) => {
   return `[data-testid="${id}"]`
 }
 
-describe('[ORGANISMS] SetUserList', ()=> {
+describe('[PAGES] SetUserList', ()=> {
+  jest.useFakeTimers()
+  const dummyUsers: User[] = [
+    {
+      "id": 111, 
+      "userId": '111', 
+      "name": 'test1', 
+      "roleType": 1, 
+      "lang": 'jp', 
+      "mailAddress": 'test@hoge.com',
+      "nulabAccount": null
+    },
+    {
+      "id": 222, 
+      "userId": '222', 
+      "name": 'test2', 
+      "roleType": 1, 
+      "lang": 'jp', 
+      "mailAddress": 'test@hoge.com',
+      "nulabAccount": null
+    },
+    {
+      "id": 333, 
+      "userId": '333', 
+      "name": 'test3', 
+      "roleType": 1, 
+      "lang": 'jp', 
+      "mailAddress": 'test@hoge.com',
+      "nulabAccount": {id: 'nulab_tarou'}
+    }
+  ]
+
+  const dummyIcon: string = 'test'
+
   it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(<SetUserList />, div);
@@ -34,7 +71,6 @@ describe('[ORGANISMS] SetUserList', ()=> {
     })    
 
     const wrapper = shallow(<SetUserList/>)
-
     const deleteButtons = wrapper.find(sel('delete'))
     expect(deleteButtons.length).toBe(2)
 
@@ -121,14 +157,66 @@ describe('[ORGANISMS] SetUserList', ()=> {
     expect(addButtons.length).toBe(0)
   })
 
-  it('should change userList when input changes', ()=> {
-    const dispatchMock = jest.fn()
+  it('should go prev step when empty spaceName', async (done) => {
+    const setNextProgressMock = jest.fn()
+    jest.spyOn(ProgressContext, 'useProgressContext').mockImplementation(():any => {
+      return {
+        currentStep: 2,
+        SetNextProgress: setNextProgressMock
+      }
+    })
 
+    const toastDispatchMock = jest.fn()
+    jest.spyOn(ToastContext, 'useToastContext').mockImplementation(():any => {
+      return {
+        dispatch: toastDispatchMock
+      }
+    })
+
+    let wrapper
+    await act(async () => {
+      wrapper = mount(<SetUserList/>, { attachTo: document.body })
+      jest.runAllTimers()
+    })
+    wrapper.update()
+
+    expect(toastDispatchMock).toBeCalledWith({
+      type: 'PUSH_NOTIFICATION',
+      payload: {
+        message: 'API Keyの登録が完了していません'
+      }
+    })
+
+    setImmediate(() => {
+      jest.runAllTimers()
+      expect(setNextProgressMock).toBeCalledWith(1)
+      done()
+    })
+  })
+
+  it('should change userList when input changes', async ()=> {
+    jest.spyOn(ProgressContext, 'useProgressContext').mockImplementation(():any => {
+      return {
+        currentStep: 2
+      }
+    })
+
+    const mockGetUsers = jest.fn(() => Promise.resolve(dummyUsers))
+    const mockGetUserIcon = jest.fn(() => Promise.resolve(dummyIcon))
+    jest.spyOn(BacklogApi, 'useBacklogApi').mockImplementation(():any => {
+      return {
+        getUsers: mockGetUsers,
+        getUserIcon: mockGetUserIcon
+      }
+    })
+  
+    const dispatchMock = jest.fn()
     jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
       return {
         state: {
           inputs: {
-            userList: ['user1', 'user2', 'user3', 'user4', 'user5']
+            spaceName: 'test',
+            userList: [null]
           },
           errors: {
             userList: null
@@ -138,21 +226,61 @@ describe('[ORGANISMS] SetUserList', ()=> {
       }
     })
 
-    const wrapper = mount(<SetUserList/>)
-    const inputs = wrapper.find(sel('inputUser')).find('input')
-    inputs.at(0).simulate('change', {target: {value: 'abc'}})
-  
+    let wrapper
+    await act(async () => {
+      wrapper = mount(<SetUserList/>)
+    })
+    wrapper.update()
+    
+    const selects = wrapper.find(sel('select'))
+    selects.at(0).find('li').at(0).simulate('click')
+
     expect(dispatchMock).toBeCalledWith({
       type: 'CHANGE_USER_LIST',
       payload: {
-        userName: 'abc',
+        user: {
+          ...dummyUsers[0],
+          iconImage: dummyIcon
+        },
         index: 0
       }
     })
   })
 
+  it('should no load icon image when already loaded', async () => {
+    jest.spyOn(ProgressContext, 'useProgressContext').mockImplementation(():any => {
+      return {
+        currentStep: 2
+      }
+    })
+
+    const mockGetUsers = jest.fn(() => Promise.resolve(dummyUsers))
+    const mockGetUserIcon = jest.fn(() => Promise.resolve(dummyIcon))
+    jest.spyOn(BacklogApi, 'useBacklogApi').mockImplementation(():any => {
+      return {
+        getUsers: mockGetUsers,
+        getUserIcon: mockGetUserIcon
+      }
+    })
+
+    let wrapper
+    await act(async () => {
+      wrapper = mount(<SetUserList/>)
+    })
+    wrapper.update()
+
+    mockGetUserIcon.mockClear()
+    const select = wrapper.find(sel('select')).at(0)
+    select.prop('onAppear')({
+      ...dummyUsers[0],
+      iconImage: dummyIcon
+    })
+
+    expect(mockGetUserIcon).not.toBeCalled()
+  })
+
   it('should go next step when input userList', () => {
-    const mockNext = jest.fn()
+    const settingsDispatchMock = jest.fn()
     jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
       return {
         state: {
@@ -162,10 +290,12 @@ describe('[ORGANISMS] SetUserList', ()=> {
           errors: {
             userList: ''
           }
-        }
+        },
+        dispatch: settingsDispatchMock
       }
     })
 
+    const mockNext = jest.fn()
     jest.spyOn(ProgressContext, 'useProgressContext').mockImplementation(():any => {
       return {
         Next: mockNext
@@ -175,6 +305,9 @@ describe('[ORGANISMS] SetUserList', ()=> {
     const wrapper = shallow(<SetUserList />)
     wrapper.find(sel('next')).simulate('click')
     expect(mockNext).toBeCalled()
+    expect(settingsDispatchMock).toBeCalledWith({
+      type: 'DELETE_EMPTY_USER_LIST'
+    })
   })
 
   it('should progress back when click back button', () => {
