@@ -9,7 +9,7 @@ const sel = (id: string) => {
   return `[data-testid="${id}"]`
 }
 
-describe('[ORGANISMS] StartView', ()=> {
+describe('[PAGES] StartView', ()=> {
   it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(<StartView />, div);

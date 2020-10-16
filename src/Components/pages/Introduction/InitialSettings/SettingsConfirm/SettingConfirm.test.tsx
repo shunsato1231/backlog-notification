@@ -13,7 +13,7 @@ const sel = (id: string) => {
   return `[data-testid="${id}"]`
 }
 
-describe('[ORGANISMS] SettingsConfirm', ()=> {
+describe('[PAGES] SettingsConfirm', ()=> {
   jest.useFakeTimers()
 
   it('renders without crashing', () => {

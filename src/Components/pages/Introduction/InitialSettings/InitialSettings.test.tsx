@@ -8,7 +8,7 @@ const sel = (id: string) => {
   return `[data-testid="${id}"]`
 }
 
-describe('[ORGANISMS] InitialSettings', () => {
+describe('[PAGES] InitialSettings', () => {
 
   const progressList = [
     {
