@@ -38,6 +38,15 @@ describe('[CUSTOM HOOK] useAuth', () => {
     expect(result.current.info.apiKey).toEqual(apiKey)
   })
 
+  it('set spaceID', () => {
+    const { result } = renderHook(() => useAuth())
+    const spaceId = 'testKey'
+    firestoreMock.mockSetReturn = { id: 'test-id' }
+
+    act(() => { result.current.setSpaceId(spaceId) })
+    expect(result.current.info.spaceId).toEqual(spaceId)
+  })
+
   it('set userList', () => {
     const { result } = renderHook(() => useAuth())
     const userList = [null]
