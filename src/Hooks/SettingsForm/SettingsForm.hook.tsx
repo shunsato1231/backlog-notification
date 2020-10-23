@@ -153,7 +153,6 @@ const reducer = (state: State, action: Actions): State => {
     }
 
     case 'DELETE_EMPTY_USER_LIST': {
-      console.log(state.inputs.userList)
       let newUserList = state.inputs.userList.filter(item => item !== null)
 
       return  {

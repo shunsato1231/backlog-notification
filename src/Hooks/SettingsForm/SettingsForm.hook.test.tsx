@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useSettingsForm, errorMessages } from './SettingsForm.hook';
 import { SettingsFormProvider } from './SettingsForm.context';
+import { ImageUser } from '../../Components/organisms/UserSelect/UserSelect.component';
 
 describe('[CUSTOM HOOK] useSettings', () => {
   it('provider renders without crashing', () => {
@@ -94,80 +95,122 @@ describe('[CUSTOM HOOK] useSettings', () => {
     expect(result.current.state.errors.spaceName).toEqual(error)
   })
 
-  // it('validate userList', () => {
-  //   const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', spaceName: '', userList: ['', '']}))
+  it('validate userList', () => {
+    const user1:ImageUser = {
+      id: 0,
+      userId: '',
+      name: '',
+      roleType: 0,
+      lang: '',
+      mailAddress: '',
+      nulabAccount: null,
+      iconImage: ''
+    }
 
-  //   act(() => result.current.dispatch({
-  //     type: 'CHANGE_USER_LIST',
-  //     payload: {
-  //       userName: '',
-  //       index: 0
-  //     }
-  //   }))
-  //   expect(result.current.state.inputs.userList[0]).toEqual('')
-  //   expect(result.current.state.errors.userList).toEqual(errorMessages.userList)
+    const user2:ImageUser = {
+      id: 0,
+      userId: '',
+      name: 'test user',
+      roleType: 0,
+      lang: '',
+      mailAddress: '',
+      nulabAccount: null,
+      iconImage: ''
+    }
 
-  //   act(() => {
-  //     result.current.dispatch({
-  //       type: 'POP_USER_LIST',
-  //       payload: {
-  //         index: 0
-  //       }
-  //     })
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', spaceName: '', userList: [null, user1]}))
 
-  //     result.current.dispatch({
-  //       type: 'CHANGE_USER_LIST',
-  //       payload: {
-  //         userName: 'test',
-  //         index: 0
-  //       }
-  //     })
-  //   })
-  //   expect(result.current.state.inputs.userList[0]).toEqual('test')
-  //   expect(result.current.state.errors.userList).toEqual(null)
+    act(() => result.current.dispatch({
+      type: 'CHANGE_USER_LIST',
+      payload: {
+        user: user1,
+        index: 0
+      }
+    }))
+    expect(result.current.state.inputs.userList[0]).toEqual(user1)
+    expect(result.current.state.errors.userList).toEqual(errorMessages.userList)
+
+    act(() => {
+      result.current.dispatch({
+        type: 'POP_USER_LIST',
+        payload: {
+          index: 0
+        }
+      })
+
+      result.current.dispatch({
+        type: 'CHANGE_USER_LIST',
+        payload: {
+          user: user2,
+          index: 0
+        }
+      })
+    })
+    expect(result.current.state.inputs.userList[0]).toEqual(user2)
+    expect(result.current.state.errors.userList).toEqual(null)
 
     
-  // })
+  })
 
-  // it('push userList', () => {
-  //   const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', spaceName: '',  userList: ['']}))
-  //   expect(result.current.state.inputs.userList.length).toBe(1)
+  it('push userList', () => {
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', spaceName: '',  userList: [null]}))
+    expect(result.current.state.inputs.userList.length).toBe(1)
 
-  //   act(() => result.current.dispatch({
-  //     type: 'PUSH_USER_LIST'
-  //   }))
-  //   expect(result.current.state.inputs.userList.length).toBe(2)
-  // })
+    act(() => result.current.dispatch({
+      type: 'PUSH_USER_LIST'
+    }))
+    expect(result.current.state.inputs.userList.length).toBe(2)
+  })
 
-  // it('pop userList', () => {
-  //   const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', spaceName:'', userList: ['', '', 'test user']}))
-  //   expect(result.current.state.inputs.userList.length).toBe(3)
+  it('pop userList', () => {
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', spaceName:'', userList: [null, null, null]}))
+    expect(result.current.state.inputs.userList.length).toBe(3)
 
-  //   act(() => result.current.dispatch({
-  //     type: 'POP_USER_LIST',
-  //     payload: {
-  //       index: 0
-  //     }
-  //   }))
-  //   expect(result.current.state.inputs.userList.length).toBe(2)
-  //   expect(result.current.state.errors.userList).toEqual(null)
+    act(() => result.current.dispatch({
+      type: 'POP_USER_LIST',
+      payload: {
+        index: 0
+      }
+    }))
+    expect(result.current.state.inputs.userList.length).toBe(2)
+    expect(result.current.state.errors.userList).toEqual(errorMessages.userList)
 
-  //   act(() => result.current.dispatch({
-  //     type: 'POP_USER_LIST',
-  //     payload: {
-  //       index: 1
-  //     }
-  //   }))
-  //   expect(result.current.state.inputs.userList.length).toBe(1)
-  //   expect(result.current.state.errors.userList).toEqual(errorMessages.userList)
+    act(() => result.current.dispatch({
+      type: 'POP_USER_LIST',
+      payload: {
+        index: 1
+      }
+    }))
+    expect(result.current.state.inputs.userList.length).toBe(1)
+    expect(result.current.state.errors.userList).toEqual(errorMessages.userList)
 
-  //   act(() => result.current.dispatch({
-  //     type: 'POP_USER_LIST',
-  //     payload: {
-  //       index: 0
-  //     }
-  //   }))
-  //   expect(result.current.state.inputs.userList.length).toBe(0)
-  //   expect(result.current.state.errors.userList).toEqual(errorMessages.userList)
-  // })
+    act(() => result.current.dispatch({
+      type: 'POP_USER_LIST',
+      payload: {
+        index: 0
+      }
+    }))
+    expect(result.current.state.inputs.userList.length).toBe(0)
+    expect(result.current.state.errors.userList).toEqual(errorMessages.userList)
+  })
+
+  it('delete empty userList', () => {
+    const user:ImageUser = {
+      id: 0,
+      userId: '',
+      name: 'test user',
+      roleType: 0,
+      lang: '',
+      mailAddress: '',
+      nulabAccount: null,
+      iconImage: ''
+    }
+
+    const { result } = renderHook(() => useSettingsForm({spaceId: '', apiKey: '', spaceName: '',  userList: [null, user, null]}))
+
+    act(() => result.current.dispatch({
+      type: 'DELETE_EMPTY_USER_LIST'
+    }))
+    expect(result.current.state.inputs.userList.length).toBe(1)
+  })
 })
