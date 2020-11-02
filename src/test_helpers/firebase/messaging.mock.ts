@@ -1,3 +1,5 @@
+ /* istanbul ignore file */
+
 interface IMessagingMock {
   mockUseServiceWorker: jest.Mock;
   _mockUseServiceWorkerFlag: boolean

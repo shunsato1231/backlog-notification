@@ -1,3 +1,5 @@
+ /* istanbul ignore file */
+
 interface IFiresoreMock {
   mockCollection: jest.Mock;
   mockDoc: jest.Mock;

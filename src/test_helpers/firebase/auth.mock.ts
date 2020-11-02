@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 // import firebase from 'firebase/app'
 
 interface IAuthMock {
