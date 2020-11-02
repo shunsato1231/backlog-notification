@@ -53,7 +53,7 @@ export const UserSelect: React.FC<UserSelectProps> = ({
     }, [])
   }
 
-  const getIconImage = async (userList: ImageUser[], scrollSectionIndex: number) => {
+  const getIconImage = async (userList: ImageUser[], scrollSectionIndex: number): Promise<void> => {
     setSearchUserList(await Promise.all(userList.map(async (item, index) => {
       if(index >= scrollSectionIndex  * 10 && index < (scrollSectionIndex + 1) * 10) {
         return await onAppear(item)
@@ -67,21 +67,21 @@ export const UserSelect: React.FC<UserSelectProps> = ({
     })))
   }
 
-  const selecterTrigger = () => {
+  const selecterTrigger = (): void => {
     setIsShow(!isShow)
   }
 
-  const handleClick = (e: MouseEvent) => {
+  const handleClick = (e: MouseEvent): void => {
     if(wrapperRef && wrapperRef.current && !wrapperRef.current.contains(e.target)) {
       setIsShow(false)
-    } 
+    }
   }
  
-  const scrollFnc = () => {
+  const scrollFnc = (): void => {
     setScrollSectionIndex(Math.ceil(userListRef.current.scrollTop / 228))
   }
 
-  const getPoint = () => {
+  const getPoint = (): void => {
     setStyleVar({
       '--top': wrapperRef.current.getBoundingClientRect().bottom,
       '--left': wrapperRef.current.getBoundingClientRect().left,
@@ -89,6 +89,8 @@ export const UserSelect: React.FC<UserSelectProps> = ({
     })
   }
 
+  // resize observer not do not work in jsdom
+  /* istanbul ignore next */
   useResizeObserver(wrapperRef, _.debounce((entry) => {
     setStyleVar({
       '--top': entry.bottom,
@@ -127,20 +129,24 @@ export const UserSelect: React.FC<UserSelectProps> = ({
 
   return (
     <div
+      data-testid='wrapper'
       className={`${className || ''}`}
       style={styleVar as React.CSSProperties}
       ref={wrapperRef}
     >
       <div
+        data-testid='selecterTrigger'
         onClick={selecterTrigger}
       >
         {value
           ? <UserListItem
+              data-testid='selectedUser'
               className={`${styles.arrow} ${styles.selected}`}
               name={value.name}
               image={value.iconImage}
             />
           : <p
+              data-testid='notSelectedUser'
               className={`${styles.unselect} ${styles.arrow}`}
             >
               ユーザを選択してください
@@ -148,10 +154,12 @@ export const UserSelect: React.FC<UserSelectProps> = ({
         }
       </div>
       <div
+        data-testid='selecterWrapper'
         className={`${styles.selecterWrapper} ${isShow ? styles.open : styles.close}`}
       >
         <div className={styles.searchBox}>
           <Input
+            data-testid='input'
             className={styles.searchInput}
             value={searchWord}
             theme='search'
@@ -161,16 +169,18 @@ export const UserSelect: React.FC<UserSelectProps> = ({
         <ul
           className={styles.userList}
           ref={userListRef}
+          data-testid='userList'
         >
           {
             searchUserList.length === 0
-              ? <p>{`No results match "${searchWord}"`}</p>
+              ? <p data-testid='notFound'>{`No results match "${searchWord}"`}</p>
               : searchUserList.map(item =>
                 <UserListItem
+                  data-testid='userListItem'
                   className={styles.userListItem}
-                  name={item?.name}
-                  image={item?.iconImage}
-                  key={item?.id}
+                  name={item.name}
+                  image={item.iconImage}
+                  key={item.id}
                   onClick={
                     () => {
                       onChange(item)
