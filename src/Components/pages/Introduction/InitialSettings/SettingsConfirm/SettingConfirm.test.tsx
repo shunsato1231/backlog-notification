@@ -212,4 +212,49 @@ describe('[PAGES] SettingsConfirm', ()=> {
       done()
     })
   })
+
+  it('should not go next progress when click done when error apiKey and userList', (done) => {
+    jest.spyOn(SettingsFormContext, 'useSettingsFormContext').mockImplementation(():any => {
+      return {
+        state: {
+          inputs: {
+            apiKey: null,
+            userList: [null]
+          },
+          errors: {
+            apiKey: 'error',
+            userList: null
+          }
+        }
+      }
+    })
+
+    const nextMock = jest.fn()
+    jest.spyOn(ProgressContext, 'useProgressContext').mockImplementation(():any => {
+      return {
+        currentStep: 3,
+        Next: nextMock,
+        SetNextProgress: jest.fn()
+      }
+    })
+
+
+    const historyMock = { push: jest.fn(), location: {}, listen: jest.fn() }
+    const wrapper = mount(
+      <Router history={historyMock}>
+        <SettingsConfirm />
+      </Router>
+    )
+
+    const button = wrapper.find(sel('done'))
+    act(() => {
+      button.simulate('click')
+    })
+
+    setImmediate(() => {
+      expect(nextMock).not.toBeCalled()
+      jest.runAllTimers()
+      done()
+    })
+  })
 })
