@@ -89,8 +89,6 @@ export const UserSelect: React.FC<UserSelectProps> = ({
     })
   }
 
-  // resize observer not do not work in jsdom
-  /* istanbul ignore next */
   useResizeObserver(wrapperRef, _.debounce((entry) => {
     setStyleVar({
       '--top': entry.bottom,

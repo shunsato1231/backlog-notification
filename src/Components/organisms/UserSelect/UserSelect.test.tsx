@@ -3,8 +3,8 @@ import { mount, shallow } from 'enzyme';
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ImageUser, UserSelect } from "./UserSelect.component";
-
+import { ImageUser, UserSelect } from "./UserSelect.component"
+import _ from 'lodash'
 const sel = (id: string) => {
   return `[data-testid="${id}"]`
 }
@@ -269,6 +269,53 @@ describe('[ORGANISMS] UserSelect', () => {
     expect(wrapper.find(sel('wrapper')).prop('style')).toEqual({ '--top': 100, '--left': 100, '--width': '120px' })
   })
 
+  it('change style var when resize item', () => {
+    jest.spyOn(_, 'debounce').mockImplementation(fn => fn)
+    interface ResizeEvent {
+      contentRect?: { top?:number; left?:number; width?: number; };
+    }
+  
+    let callback: (e: ResizeEvent[]) => void
+    const mockResizeObserverObserve = jest.fn()
+    const mockResizeObserverDisconnect = jest.fn()
+    const mockResizeObserver = jest.fn((cb) => ({
+      observe: () => {
+        callback = cb
+        mockResizeObserverObserve()
+      },
+      disconnect: () => mockResizeObserverDisconnect(),
+    }))
+
+    globalThis.ResizeObserver = mockResizeObserver
+
+    const triggerObserverCb = (e: ResizeEvent) => {
+      callback([e])
+    }
+
+    const contentRect = { bottom: 100, left: 100, width: 200 }
+
+    const wrapper1 = mount(<UserSelect
+      userList={mockUserList}
+      value={mockUserList[0]}
+      onChange={(item) => {item}}
+      onAppear={async (item) => {item}}
+    />)
+    triggerObserverCb({ contentRect })
+    wrapper1.update()
+    expect(wrapper1.find(sel('wrapper')).prop('style')).toEqual({ '--top': 100, '--left': 100, '--width': '200px' })
+
+    const wrapper2 = mount(<UserSelect
+      userList={mockUserList}
+      value={mockUserList[0]}
+      onChange={(item) => {item}}
+      onAppear={async (item) => {item}}
+      width='100%'
+    />)
+    triggerObserverCb({ contentRect })
+    wrapper2.update()
+    expect(wrapper2.find(sel('wrapper')).prop('style')).toEqual({ '--top': 100, '--left': 100, '--width': '100%' })
+  })
+
   it('const style var width when set width', () => {
     const wrapper = mount(<UserSelect
       userList={mockUserList}
@@ -397,7 +444,6 @@ describe('[ORGANISMS] UserSelect', () => {
         wrapper.find(sel('userList')).getDOMNode().dispatchEvent(scrollEvent)
       })
       wrapper.update()
-
       expect(mockOnAppear.mock.calls.length).toBe(3)
 
       for(let index = 0; index < 3; index ++) {
