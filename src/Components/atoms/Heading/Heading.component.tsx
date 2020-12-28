@@ -1,12 +1,12 @@
 import React from 'react'
 import styles from './Heading.style.styl'
 
-interface H2Props extends React.Props<{}> {
+export interface HeadingProps extends React.Props<{}> {
   theme?: 'initialSettings'
   className?: string
 }
 
-export const H2: React.FC<H2Props> = ({
+export const H2: React.FC<HeadingProps> = ({
   theme,
   className,
   children
@@ -18,12 +18,7 @@ export const H2: React.FC<H2Props> = ({
   </h2>
 )
 
-interface H3Props extends React.Props<{}> {
-  theme?: 'initialSettings'
-  className?: string
-}
-
-export const H3: React.FC<H3Props> = ({
+export const H3: React.FC<HeadingProps> = ({
   theme,
   className,
   children

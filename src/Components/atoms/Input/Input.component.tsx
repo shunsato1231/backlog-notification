@@ -2,13 +2,14 @@ import React from 'react'
 import { Icon } from '../Icon/Icon.component'
 import styles from './Input.style.styl'
 
-interface InputProps extends React.Props<{}> {
+export interface InputProps extends React.Props<{}> {
     className?: string,
     theme?: 'default' | 'search',
     status?: 'normal' | 'error' | 'correct',
     placeholder?: string
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
-    value: string, 
+    value: string,
+    height?: number
 }
 
 export const Input:React.FC<InputProps> = ({
@@ -18,9 +19,11 @@ export const Input:React.FC<InputProps> = ({
     placeholder,
     onChange,
     value,
+    height
 }): JSX.Element => {
   return (
     <div
+      style={{height: height + 'px'}}
       className={`${className || ''} ${styles.wrapper}`}
     >
       <input

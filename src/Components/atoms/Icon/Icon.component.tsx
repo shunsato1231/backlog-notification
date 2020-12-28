@@ -3,7 +3,7 @@ import React from 'react'
 
 const styles = require('./Icon.style.styl')
 
-interface IconProps extends React.Props<{}> {
+export interface IconProps extends React.Props<{}> {
   size?: number | 'small' | 'middle' | 'large'
   className?: string,
   theme: 'help' | 'search' | 'loading'
