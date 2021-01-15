@@ -15,6 +15,7 @@ export const H2: React.FC<HeadingProps> = ({
     className={`${styles[theme]} ${className || ''}`}
   >
     {children}
+    (heading)
   </h2>
 )
 
