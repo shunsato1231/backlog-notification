@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom'
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useAuth } from './Auth.hook';
 import * as firebase from '../Firebase/Firebase.hook'
-import FirestoreMock from '../../test_helpers/firebase/firestore.mock';
-import AuthMock from '../../test_helpers/firebase/auth.mock';
+import FirestoreMock from '../../../test_helpers/firebase/firestore.mock';
+import AuthMock from '../../../test_helpers/firebase/auth.mock';
 import { AuthProvider } from './Auth.context';
 
 describe('[CUSTOM HOOK] useAuth', () => {

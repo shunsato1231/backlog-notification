@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 import { useNotification, errorMessages } from './Notification.hook'
 import * as firebase from '../Firebase/Firebase.hook'
-import MessagingMock from '../../test_helpers/firebase/messaging.mock'
+import MessagingMock from '../../../test_helpers/firebase/messaging.mock'
 import axios, { AxiosRequestConfig } from 'axios'
 
 jest.mock('axios')

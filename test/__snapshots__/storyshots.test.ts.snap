@@ -1,0 +1,160 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots atoms/Button Add 1`] = `
+<button
+  className="add "
+/>
+`;
+
+exports[`Storyshots atoms/Button Back 1`] = `
+<button
+  className="back "
+/>
+`;
+
+exports[`Storyshots atoms/Button Default 1`] = `
+<button
+  className="base green medium "
+>
+  Button
+</button>
+`;
+
+exports[`Storyshots atoms/Button Delete 1`] = `
+<button
+  className="delete "
+/>
+`;
+
+exports[`Storyshots atoms/Heading H 2 Initial Setting 1`] = `
+<h2
+  className="initialSettings "
+>
+  test
+</h2>
+`;
+
+exports[`Storyshots atoms/Heading H 3 Initial Setting 1`] = `
+<h3
+  className="initialSettings "
+>
+  test
+</h3>
+`;
+
+exports[`Storyshots atoms/Icon Help 1`] = `
+<i
+  className="help "
+  style={
+    Object {
+      "--size": "25px",
+    }
+  }
+/>
+`;
+
+exports[`Storyshots atoms/Icon Loading 1`] = `
+<i
+  className="loading "
+  style={
+    Object {
+      "--size": "25px",
+    }
+  }
+/>
+`;
+
+exports[`Storyshots atoms/Icon Search 1`] = `
+<i
+  className="search "
+  style={
+    Object {
+      "--size": "25px",
+    }
+  }
+/>
+`;
+
+exports[`Storyshots atoms/Input Default Input 1`] = `
+<div
+  className=" wrapper"
+  style={
+    Object {
+      "height": "undefinedpx",
+    }
+  }
+>
+  <input
+    className="default undefined"
+    placeholder="default input"
+  />
+</div>
+`;
+
+exports[`Storyshots atoms/Input Search Input 1`] = `
+<div
+  className=" wrapper"
+  style={
+    Object {
+      "height": "28px",
+    }
+  }
+>
+  <input
+    className="search undefined"
+    placeholder="search input"
+  />
+  <i
+    className="search searchIcon"
+    style={
+      Object {
+        "--size": "25px",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`Storyshots molecres/HelpHeading H 2 Initial Setting 1`] = `
+<h2
+  className="initialSettings  help"
+>
+  test
+  <a
+    className="initialSettingsIcon"
+    href="test.com"
+    target="_blank"
+  >
+    <i
+      className="help "
+      style={
+        Object {
+          "--size": "20px",
+        }
+      }
+    />
+  </a>
+</h2>
+`;
+
+exports[`Storyshots molecres/HelpHeading H 3 Initial Setting 1`] = `
+<h3
+  className="initialSettings  help"
+>
+  test
+  <a
+    className="initialSettingsIcon"
+    href="test.com"
+    target="_blank"
+  >
+    <i
+      className="help "
+      style={
+        Object {
+          "--size": "20px",
+        }
+      }
+    />
+  </a>
+</h3>
+`;
