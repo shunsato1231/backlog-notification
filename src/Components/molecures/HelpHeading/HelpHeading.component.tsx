@@ -3,14 +3,14 @@ import { H2, H3 } from '../../atoms/Heading/Heading.component'
 import { Icon } from '../../atoms/Icon/Icon.component'
 import styles from './HelpHeading.style.styl'
 
-interface HelpProps extends React.Props<{}> {
+export interface HelpHeadingProps extends React.Props<{}> {
   helpLink: string
   className?: string
   theme?: 'initialSettings',
   iconSize?: 'small' | 'middle' | 'large' | number
 }
 
-export const H2_Help: React.FC<HelpProps> = ({
+export const H2_Help: React.FC<HelpHeadingProps> = ({
   helpLink,
   className,
   theme,
@@ -35,7 +35,7 @@ export const H2_Help: React.FC<HelpProps> = ({
   </H2>
 )
 
-export const H3_Help: React.FC<HelpProps> = ({
+export const H3_Help: React.FC<HelpHeadingProps> = ({
   helpLink,
   className,
   theme,
