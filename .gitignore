@@ -118,3 +118,8 @@ dist
 # dist
 .dist
 
+#storybook-static
+storybook-static/
+
+#DS_Store
+.DS_Store
